@@ -11,9 +11,9 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import database.AccountCRUD;
-import database.AdminCRUD;
-import database.CustomerCRUD;
+import database.AccountDAO;
+import database.AdminDAO;
+import database.CustomerDAO;
 import database.HibernateUtil;
 import entites.Account;
 import entites.Admin;
@@ -21,9 +21,9 @@ import entites.Customer;
 
 public class TestDatabase {
   public static void main(String[] args) {
-    AccountCRUD accManager = new AccountCRUD();
-    AdminCRUD adManger = new AdminCRUD();
-    CustomerCRUD cusManger = new CustomerCRUD();
+    AccountDAO accManager = new AccountDAO();
+    AdminDAO adManger = new AdminDAO();
+    CustomerDAO cusManger = new CustomerDAO();
     /*
     Account acc = new Account("khachhang", "pass", "11");
     accManager.save(acc);

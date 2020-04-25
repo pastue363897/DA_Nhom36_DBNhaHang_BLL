@@ -7,9 +7,9 @@ package database;
 
 import entites.Account;
 
-public class AccountCRUD extends GeneralCRUD<Account>{
+public class AccountDAO extends GeneralCRUD<Account>{
 
-  public AccountCRUD() {
+  public AccountDAO() {
     super(Account.class);
   }
   

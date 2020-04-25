@@ -7,9 +7,9 @@ package database;
 
 import entites.Admin;
 
-public class AdminCRUD extends GeneralCRUD<Admin>{
+public class AdminDAO extends GeneralCRUD<Admin>{
 
-  public AdminCRUD() {
+  public AdminDAO() {
     super(Admin.class);
   }
   
