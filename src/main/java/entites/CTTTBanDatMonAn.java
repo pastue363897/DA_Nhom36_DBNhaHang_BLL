@@ -15,9 +15,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "CTTTDatBanMoAn")
+@Table(name = "CTTTBanDatMonAn")
 @IdClass(PK_BanDat_MonAn.class)
-public class CTTTDatBanMoAn implements Serializable{
+public class CTTTBanDatMonAn implements Serializable{
   private static final long serialVersionUID = -8856029055109251762L;
   @Id
   @ManyToOne
@@ -29,10 +29,10 @@ public class CTTTDatBanMoAn implements Serializable{
   private MonAn monAn;
   private int soLuong;
   private long donGia;
-  public CTTTDatBanMoAn() {
+  public CTTTBanDatMonAn() {
     super();
   }
-  public CTTTDatBanMoAn(TTBanDat ttBanDat, MonAn monAn, int soLuong, long donGia) {
+  public CTTTBanDatMonAn(TTBanDat ttBanDat, MonAn monAn, int soLuong, long donGia) {
     super();
     this.ttBanDat = ttBanDat;
     this.monAn = monAn;
@@ -65,7 +65,7 @@ public class CTTTDatBanMoAn implements Serializable{
   }
   @Override
   public String toString() {
-    return "CTTTDatBanMoAn [ttBanDat=" + ttBanDat.toString() + ", monAn=" + monAn.toString() + ", soLuong=" + soLuong + ", donGia=" + donGia
+    return "CTTTBanDatMonAn [ttBanDat=" + ttBanDat.toString() + ", monAn=" + monAn.toString() + ", soLuong=" + soLuong + ", donGia=" + donGia
         + "]";
   }
   

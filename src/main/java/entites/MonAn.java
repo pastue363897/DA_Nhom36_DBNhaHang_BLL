@@ -39,6 +39,16 @@ public class MonAn implements Serializable{
     this.isUsable = isUsable;
     this.isDeleted = isDeleted;
   }
+  public MonAn(String tenMA, String moTaMA, int soLuongNguoi, String hinhAnhMA, long giaTien) {
+    super();
+    this.tenMA = tenMA;
+    this.moTaMA = moTaMA;
+    this.soLuongNguoi = soLuongNguoi;
+    this.hinhAnhMA = hinhAnhMA;
+    this.giaTien = giaTien;
+    this.isUsable = false;
+    this.isDeleted = false;
+  }
   public String getMaMA() {
     return maMA;
   }

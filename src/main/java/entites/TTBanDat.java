@@ -34,12 +34,12 @@ public class TTBanDat implements Serializable{
   private boolean daThanhToan;
   private boolean daHuy;
   @OneToMany(mappedBy = "ttBanDat")
-  private List<CTTTDatBanMoAn> dsMonAn;
+  private List<CTTTBanDatMonAn> dsMonAn;
   public TTBanDat() {
     super();
   }
   public TTBanDat(String maBD, Customer khachHang, Date ngayDatBan, Date ngayPhucVu, BanAn banAn, long tongTien,
-      boolean daThanhToan, boolean daHuy, List<CTTTDatBanMoAn> dsMonAn) {
+      boolean daThanhToan, boolean daHuy, List<CTTTBanDatMonAn> dsMonAn) {
     super();
     this.maBD = maBD;
     this.khachHang = khachHang;
@@ -99,10 +99,10 @@ public class TTBanDat implements Serializable{
   public void setDaHuy(boolean daHuy) {
     this.daHuy = daHuy;
   }
-  public List<CTTTDatBanMoAn> getDsMonAn() {
+  public List<CTTTBanDatMonAn> getDsMonAn() {
     return dsMonAn;
   }
-  public void setDsMonAn(List<CTTTDatBanMoAn> dsMonAn) {
+  public void setDsMonAn(List<CTTTBanDatMonAn> dsMonAn) {
     this.dsMonAn = dsMonAn;
   }
   @Override

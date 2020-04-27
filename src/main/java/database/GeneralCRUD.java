@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 public class GeneralCRUD<T> {
   
@@ -19,45 +20,89 @@ public class GeneralCRUD<T> {
     super();
     this.type = type;
   }
-  public T save(final T o) {
+  public String save(final T o) {
     Session session = sessionFactory.getCurrentSession();
-    session.getTransaction().begin();
-    T ob = (T) session.save(o);
-    session.getTransaction().commit();
-    return ob;
+    Transaction tr = session.getTransaction();
+    try {
+      tr.begin();
+      String id = (String) session.save(o);
+      tr.commit();
+      return id;
+    } catch (Exception e) {
+      tr.rollback();
+      e.printStackTrace();
+    }
+    return null;
   }
   public T get(final String id) {
     Session session = sessionFactory.getCurrentSession();
-    session.getTransaction().begin();
-    T ob = (T) session.get(type, id);
-    session.getTransaction().commit();
-    return ob;
+    Transaction tr = session.getTransaction();
+    try {
+      tr.begin();
+      T ob = (T) session.get(type, id);
+      tr.commit();
+      return ob;
+    } catch (Exception e) {
+      tr.rollback();
+      e.printStackTrace();
+    }
+    return null;
   }
   public List<T> getAll(){
     Session session = sessionFactory.getCurrentSession();
-    session.getTransaction().begin();
-    List<T> list = session.createCriteria(type).list();
-    session.getTransaction().commit();
-    return list;
+    Transaction tr = session.getTransaction();
+    try {
+      tr.begin();
+      List<T> list = session.createCriteria(type).list();
+      tr.commit();
+      return list;
+    } catch (Exception e) {
+      tr.rollback();
+      e.printStackTrace();
+    }
+    return null;
   }
   public T update(final T o) {
     Session session = sessionFactory.getCurrentSession();
-    session.getTransaction().begin();
-    T ob = (T) session.merge(o);
-    session.getTransaction().commit();
-    return ob;
+    Transaction tr = session.getTransaction();
+    try {
+      tr.begin();
+      T ob = (T) session.merge(o);
+      tr.commit();
+      return ob;
+    } catch (Exception e) {
+      tr.rollback();
+      e.printStackTrace();
+    }
+    return null;
   }
-  public void delete(final Object o){
+  public boolean delete(final Object o){
     Session session = sessionFactory.getCurrentSession();
-    session.getTransaction().begin();
-    session.remove(o);
-    session.getTransaction().commit();
+    Transaction tr = session.getTransaction();
+    try {
+      tr.begin();
+      session.remove(o);
+      tr.commit();
+      return true;
+    } catch (Exception e) {
+      tr.rollback();
+      e.printStackTrace();
+    }
+    return false;
   }
-  public void saveOrUpdate(final T o) {
+  public boolean saveOrUpdate(final T o) {
     Session session = sessionFactory.getCurrentSession();
-    session.getTransaction().begin();
-    session.saveOrUpdate(o);
-    session.getTransaction().commit();
+    Transaction tr = session.getTransaction();
+    try {
+      tr.begin();
+      session.saveOrUpdate(o);
+      tr.commit();
+      return true;
+    } catch (Exception e) {
+      tr.rollback();
+      e.printStackTrace();
+    }
+    return false;
   }
   
 }

@@ -22,7 +22,7 @@ public class BanAnDAO extends GeneralCRUD<BanAn>{
    * get last ID in alphanumeric order of BanAn
    * @return the ID in string
    */
-  public String getLastUsedID() {
+  private String getLastUsedID() {
 	  SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 	  Session session = sessionFactory.getCurrentSession();
 	  session.getTransaction().begin();
@@ -44,13 +44,18 @@ public class BanAnDAO extends GeneralCRUD<BanAn>{
    * substring the number part out then add by one
    * @return usable ID string for new object
    */
-  public String generateID() {
+  private String generateID() {
 	  String lastUsed = getLastUsedID();
 	  if(lastUsed.equals("")) {
 		  return "BA001";
 	  }
 	  String number = lastUsed.substring(2);
 	  return "BA"+String.format("%03d", Integer.parseInt(number)+1);
+  }
+  
+  public String addBanAn(BanAn banAn) {
+    banAn.setMaBA(generateID());
+    return this.save(banAn);
   }
   
 }

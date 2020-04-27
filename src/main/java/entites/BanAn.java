@@ -39,6 +39,17 @@ public class BanAn implements Serializable{
     this.isDeleted = isDeleted;
     this.hinhAnh = hinhAnh;
   }
+  public BanAn(String kySoBA, int soLuongGhe, String motaBA, long giaTien, boolean isUsable, boolean isDeleted,
+      String hinhAnh) {
+    super();
+    this.kySoBA = kySoBA;
+    this.soLuongGhe = soLuongGhe;
+    this.motaBA = motaBA;
+    this.giaTien = giaTien;
+    this.isUsable = isUsable;
+    this.isDeleted = isDeleted;
+    this.hinhAnh = hinhAnh;
+  }
   public String getMaBA() {
     return maBA;
   }
