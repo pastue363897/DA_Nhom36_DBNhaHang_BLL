@@ -1,6 +1,6 @@
 /**
  * Created on: 08:11:20 23 thg 4, 2020
- * @author Dinh Van Dung YKNB
+ * @author Dinh Van Dung YKNB, Ta Khanh Hoang
  */
 
 package entites;
@@ -12,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Account")
+@Table(name = "TaiKhoan")
 public class Account implements Serializable{
   private static final long serialVersionUID = -2609248807630820423L;
   @Id
@@ -48,7 +48,7 @@ public class Account implements Serializable{
   }
   @Override
   public String toString() {
-    return "Account [username=" + username + ", passwordHash=" + passwordHash + ", salt=" + salt + "]";
+    return "TaiKhoan [username=" + username + ", passwordHash=" + passwordHash + ", salt=" + salt + "]";
   }
   
 }

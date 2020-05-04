@@ -47,10 +47,10 @@ public class BanAnDAO extends GeneralCRUD<BanAn>{
   private String generateID() {
 	  String lastUsed = getLastUsedID();
 	  if(lastUsed.equals("")) {
-		  return "BA001";
+		  return "BA000001";
 	  }
 	  String number = lastUsed.substring(2);
-	  return "BA"+String.format("%03d", Integer.parseInt(number)+1);
+	  return "BA"+String.format("%06d", Integer.parseInt(number)+1);
   }
   
   public String addBanAn(BanAn banAn) {

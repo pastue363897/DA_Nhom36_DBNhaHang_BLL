@@ -1,0 +1,107 @@
+/**
+ * Created on: 08:12:01 23 thg 4, 2020
+ * @author Ta Khanh Hoang
+ */
+
+package entites;
+
+import java.io.Serializable;
+import java.sql.Date;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "ChiTietThanhToan")
+public class ChiTietThanhToan implements Serializable {
+	private static final long serialVersionUID = 1631184720491949435L;
+	@Id
+	private String maHD;
+	@OneToOne
+	@JoinColumn(name = "ttBanDat", referencedColumnName = "maBD")
+	private TTBanDat ttBanDat;
+	private long tongTien;
+	private long tienDaDua;
+	private long tienThoiLai;
+	private Date ngayThanhToan;
+	public String getMaHD() {
+		return maHD;
+	}
+	public void setMaHD(String maHD) {
+		this.maHD = maHD;
+	}
+	public TTBanDat getTtBanDat() {
+		return ttBanDat;
+	}
+	public void setTtBanDat(TTBanDat ttBanDat) {
+		this.ttBanDat = ttBanDat;
+	}
+	public long getTongTien() {
+		return tongTien;
+	}
+	public void setTongTien(long tongTien) {
+		this.tongTien = tongTien;
+	}
+	public long getTienDaDua() {
+		return tienDaDua;
+	}
+	public void setTienDaDua(long tienDaDua) {
+		this.tienDaDua = tienDaDua;
+	}
+	public long getTienThoiLai() {
+		return tienThoiLai;
+	}
+	public void setTienThoiLai(long tienThoiLai) {
+		this.tienThoiLai = tienThoiLai;
+	}
+	public Date getNgayThanhToan() {
+		return ngayThanhToan;
+	}
+	public void setNgayThanhToan(Date ngayThanhToan) {
+		this.ngayThanhToan = ngayThanhToan;
+	}
+	public ChiTietThanhToan(String maHD, TTBanDat ttBanDat, long tongTien, long tienDaDua, long tienThoiLai,
+			Date ngayThanhToan) {
+		super();
+		this.maHD = maHD;
+		this.ttBanDat = ttBanDat;
+		this.tongTien = tongTien;
+		this.tienDaDua = tienDaDua;
+		this.tienThoiLai = tienThoiLai;
+		this.ngayThanhToan = ngayThanhToan;
+	}
+	public ChiTietThanhToan() {
+		super();
+	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((maHD == null) ? 0 : maHD.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ChiTietThanhToan other = (ChiTietThanhToan) obj;
+		if (maHD == null) {
+			if (other.maHD != null)
+				return false;
+		} else if (!maHD.equals(other.maHD))
+			return false;
+		return true;
+	}
+	@Override
+	public String toString() {
+		return "ChiTietThanhToan [maHD=" + maHD + ", ttBanDat=" + ttBanDat + ", tongTien=" + tongTien + ", tienDaDua="
+				+ tienDaDua + ", tienThoiLai=" + tienThoiLai + ", ngayThanhToan=" + ngayThanhToan + "]";
+	}
+}

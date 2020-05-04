@@ -48,10 +48,10 @@ public class MonAnDAO extends GeneralCRUD<MonAn>{
   private String generateID() {
     String lastUsed = getLastUsedID();
     if(lastUsed.equals("")) {
-      return "MA001";
+      return "MA000001";
     }
     String number = lastUsed.substring(2);
-    return "MA"+String.format("%03d", Integer.parseInt(number)+1);
+    return "MA"+String.format("%06d", Integer.parseInt(number)+1);
   }
   
   public String addMonAn(MonAn monAn) {

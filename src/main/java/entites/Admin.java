@@ -1,6 +1,6 @@
 /**
  * Created on: 08:11:32 23 thg 4, 2020
- * @author Dinh Van Dung YKNB
+ * @author Dinh Van Dung YKNB, Ta Khanh Hoang
  */
 
 package entites;
@@ -14,7 +14,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Admin")
+@Table(name = "NguoiQuanLy")
 public class Admin implements Serializable{
   private static final long serialVersionUID = -6175789101923072450L;
   @Id
@@ -52,7 +52,7 @@ public class Admin implements Serializable{
   }
   @Override
   public String toString() {
-    return "Admin [maNV=" + maNV + ", hoTen=" + hoTen + ", taiKhoan=" + taiKhoan.toString() + "]";
+    return "NguoiQuanLy [maNV=" + maNV + ", hoTen=" + hoTen + ", taiKhoan=" + taiKhoan.toString() + "]";
   }
   
 }

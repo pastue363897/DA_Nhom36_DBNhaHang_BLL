@@ -1,6 +1,6 @@
 /**
  * Created on: 08:11:41 23 thg 4, 2020
- * @author Dinh Van Dung YKNB
+ * @author Dinh Van Dung YKNB, Ta Khanh Hoang
  */
 
 package entites;
@@ -14,7 +14,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Customer")
+@Table(name = "KhachHang")
 public class Customer implements Serializable{
   private static final long serialVersionUID = -2418817978735275622L;
   @Id
@@ -68,7 +68,7 @@ public class Customer implements Serializable{
   }
   @Override
   public String toString() {
-    return "Customer [maKH=" + maKH + ", hoTen=" + hoTen + ", diaChi=" + diaChi + ", cmnd=" + cmnd + ", taiKhoan="
+    return "KhachHang [maKH=" + maKH + ", hoTen=" + hoTen + ", diaChi=" + diaChi + ", cmnd=" + cmnd + ", taiKhoan="
         + taiKhoan.toString() + "]";
   }
   
