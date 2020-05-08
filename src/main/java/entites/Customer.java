@@ -22,20 +22,24 @@ public class Customer implements Serializable{
   private String hoTen;
   private String diaChi;
   private String cmnd;
+  private String sdt;
+  private String email;
   @OneToOne
   @JoinColumn(name = "taiKhoan")
   private Account taiKhoan;
   public Customer() {
     super();
   }
-  public Customer(String maKH, String hoTen, String diaChi, String cmnd, Account taiKhoan) {
+  public Customer(String hoTen, String diaChi, String cmnd, String sdt, String email, Account taiKhoan) {
     super();
-    this.maKH = maKH;
     this.hoTen = hoTen;
     this.diaChi = diaChi;
     this.cmnd = cmnd;
+    this.sdt = sdt;
+    this.email = email;
     this.taiKhoan = taiKhoan;
   }
+
   public String getMaKH() {
     return maKH;
   }
@@ -59,6 +63,18 @@ public class Customer implements Serializable{
   }
   public void setCmnd(String cmnd) {
     this.cmnd = cmnd;
+  }
+  public String getSdt() {
+    return sdt;
+  }
+  public void setSdt(String sdt) {
+    this.sdt = sdt;
+  }
+  public String getEmail() {
+    return email;
+  }
+  public void setEmail(String email) {
+    this.email = email;
   }
   public Account getTaiKhoan() {
     return taiKhoan;

@@ -5,13 +5,17 @@
 
 package database;
 
+import java.util.List;
+
 import javax.persistence.NoResultException;
 
 import org.apache.commons.io.FilenameUtils;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 import entites.BanAn;
+import entites.MonAn;
 
 public class BanAnDAO extends GeneralCRUD<BanAn> {
 
@@ -71,5 +75,39 @@ public class BanAnDAO extends GeneralCRUD<BanAn> {
 		newPath += banAn.getMaBA() + "_table_image" + "." + tempExtension;
 		banAn.setHinhAnh(newPath);
 		return this.update(banAn);
+	}
+	public List<MonAn> danhSachMonAnCoTheDat() {
+	  SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+    Session session = sessionFactory.getCurrentSession();
+    Transaction tr = session.getTransaction();
+    List<MonAn> list = null;
+    try {
+      tr.begin();
+      String sql = "select * from BanAn where isDeleted = 0";
+      list = session.createNativeQuery(sql, MonAn.class).getResultList();
+      tr.commit();
+    } catch (Exception e) {
+      tr.rollback();
+      e.printStackTrace();
+    }
+    return list;
+  }
+  
+	public List<BanAn> danhSachBonAnHome(int count) {
+	  SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+	  Session session = sessionFactory.getCurrentSession();
+    Transaction tr = session.getTransaction();
+    List<BanAn> list = null;
+    try {
+      tr.begin();
+      String sql = "select top " + count + " * from BanAn where maBA in (select top " + count
+          + " maBA from BanAn where isDeleted = 0 order by newid())";
+      list = session.createNativeQuery(sql, BanAn.class).getResultList();
+      tr.commit();
+    } catch (Exception e) {
+      tr.rollback();
+      e.printStackTrace();
+    }
+    return list;
 	}
 }

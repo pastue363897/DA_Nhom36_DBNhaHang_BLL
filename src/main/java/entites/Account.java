@@ -11,6 +11,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import net.bytebuddy.utility.RandomString;
+
 @Entity
 @Table(name = "TaiKhoan")
 public class Account implements Serializable{
@@ -22,11 +24,11 @@ public class Account implements Serializable{
   public Account() {
     super();
   }
-  public Account(String username, String passwordHash, String salt) {
+  public Account(String username, String passwordHash) {
     super();
     this.username = username;
     this.passwordHash = passwordHash;
-    this.salt = salt;
+    setSalt();
   }
   public String getUsername() {
     return username;
@@ -43,8 +45,8 @@ public class Account implements Serializable{
   public String getSalt() {
     return salt;
   }
-  public void setSalt(String salt) {
-    this.salt = salt;
+  private void setSalt() {
+    this.salt = new RandomString(15).nextString();
   }
   @Override
   public String toString() {
