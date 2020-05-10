@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -35,6 +36,9 @@ public class TTBanDat implements Serializable{
   private boolean daHuy;
   @OneToMany(mappedBy = "ttBanDat")
   private List<CTTTBanDatMonAn> dsMonAn;
+  @OneToOne
+  @JoinColumn(name = "chiTietThanhToan", referencedColumnName = "maHD")
+  private ChiTietThanhToan chiTietThanhToan;
   public TTBanDat() {
     super();
   }
@@ -105,11 +109,17 @@ public class TTBanDat implements Serializable{
   public void setDsMonAn(List<CTTTBanDatMonAn> dsMonAn) {
     this.dsMonAn = dsMonAn;
   }
-  @Override
-  public String toString() {
-    return "TTBanDat [maBD=" + maBD + ", khachHang=" + khachHang.toString() + ", ngayDatBan=" + ngayDatBan + ", ngayPhucVu="
-        + ngayPhucVu + ", banAn=" + banAn.toString() + ", tongTien=" + tongTien + ", daThanhToan=" + daThanhToan + ", daHuy="
-        + daHuy + ", dsMonAn=" + dsMonAn + "]";
-  }
-  
+	public ChiTietThanhToan getChiTietThanhToan() {
+		return chiTietThanhToan;
+	}
+	public void setChiTietThanhToan(ChiTietThanhToan chiTietThanhToan) {
+		this.chiTietThanhToan = chiTietThanhToan;
+	}
+	@Override
+	public String toString() {
+		return "TTBanDat [maBD=" + maBD + ", khachHang=" + khachHang + ", ngayDatBan=" + ngayDatBan + ", ngayPhucVu="
+				+ ngayPhucVu + ", banAn=" + banAn + ", tongTien=" + tongTien + ", daThanhToan=" + daThanhToan
+				+ ", daHuy=" + daHuy + ", dsMonAn=" + dsMonAn + ", chiTietThanhToan=" + chiTietThanhToan + "]";
+	}
+    
 }

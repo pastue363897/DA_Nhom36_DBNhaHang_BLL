@@ -73,11 +73,12 @@ public class TestDatabase {
     		baMananger.get("BA001"), 150000L, false, false, null);
     bdMananger.save(bd);
     */
+    /*
     TTBanDatDAO bdMananger2 = new TTBanDatDAO();
     ChiTietThanhToanDAO ctttManager = new ChiTietThanhToanDAO();
     ChiTietThanhToan cs =
     		new ChiTietThanhToan("HD001",
     				bdMananger2.get("BD001"), 150000, 200000, 50000, new Date(2019, 11, 18));
-    ctttManager.save(cs);
+    ctttManager.save(cs);*/
   }
 }

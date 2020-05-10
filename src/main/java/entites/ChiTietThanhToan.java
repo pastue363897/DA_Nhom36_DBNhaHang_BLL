@@ -20,9 +20,6 @@ public class ChiTietThanhToan implements Serializable {
 	private static final long serialVersionUID = 1631184720491949435L;
 	@Id
 	private String maHD;
-	@OneToOne
-	@JoinColumn(name = "ttBanDat", referencedColumnName = "maBD")
-	private TTBanDat ttBanDat;
 	private long tongTien;
 	private long tienDaDua;
 	private long tienThoiLai;
@@ -32,12 +29,6 @@ public class ChiTietThanhToan implements Serializable {
 	}
 	public void setMaHD(String maHD) {
 		this.maHD = maHD;
-	}
-	public TTBanDat getTtBanDat() {
-		return ttBanDat;
-	}
-	public void setTtBanDat(TTBanDat ttBanDat) {
-		this.ttBanDat = ttBanDat;
 	}
 	public long getTongTien() {
 		return tongTien;
@@ -63,11 +54,10 @@ public class ChiTietThanhToan implements Serializable {
 	public void setNgayThanhToan(Date ngayThanhToan) {
 		this.ngayThanhToan = ngayThanhToan;
 	}
-	public ChiTietThanhToan(String maHD, TTBanDat ttBanDat, long tongTien, long tienDaDua, long tienThoiLai,
+	public ChiTietThanhToan(String maHD, long tongTien, long tienDaDua, long tienThoiLai,
 			Date ngayThanhToan) {
 		super();
 		this.maHD = maHD;
-		this.ttBanDat = ttBanDat;
 		this.tongTien = tongTien;
 		this.tienDaDua = tienDaDua;
 		this.tienThoiLai = tienThoiLai;
@@ -101,7 +91,7 @@ public class ChiTietThanhToan implements Serializable {
 	}
 	@Override
 	public String toString() {
-		return "ChiTietThanhToan [maHD=" + maHD + ", ttBanDat=" + ttBanDat + ", tongTien=" + tongTien + ", tienDaDua="
-				+ tienDaDua + ", tienThoiLai=" + tienThoiLai + ", ngayThanhToan=" + ngayThanhToan + "]";
+		return "ChiTietThanhToan [maHD=" + maHD + ", tongTien=" + tongTien + ", tienDaDua=" + tienDaDua
+				+ ", tienThoiLai=" + tienThoiLai + ", ngayThanhToan=" + ngayThanhToan + "]";
 	}
 }
