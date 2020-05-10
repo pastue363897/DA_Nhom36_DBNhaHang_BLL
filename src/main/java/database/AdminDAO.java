@@ -8,6 +8,7 @@ package database;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 import entites.Account;
 import entites.Admin;
@@ -26,14 +27,24 @@ public class AdminDAO extends GeneralCRUD<Admin> {
 		}
 		return ret;
 	}
+	
+	private Admin getAdminByUsername(String username) {
+		List<Admin> ads = getAll();
+		for(Admin ad : ads) {
+			if(ad.getTaiKhoan().getUsername().equals(username))
+				return ad;
+		}
+		return null;
+	}
 
 	public int signIn(String username, String password) {
 		AccountDAO tmp = new AccountDAO();
 		Account chk = tmp.get(username);
+		Admin adm = getAdminByUsername(username);
 		// debug username
 		if(username.equals("DEBUG_LOGIN_1F59AC46"))
 			return 1;
-		if (chk == null)
+		if (chk == null || adm == null)
 			return 0;
 		String merge = password + chk.getSalt();
 		MessageDigest md;
