@@ -6,6 +6,7 @@
 package database;
 
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -77,5 +78,29 @@ public class CustomerDAO extends GeneralCRUD<Customer>{
       return true;
     }
     return false;
+  }
+  public boolean updateCustomer(Customer customer) {
+    Session session = sessionFactory.getCurrentSession();
+    Transaction tr = session.getTransaction();
+    boolean result = false;
+    try {
+      String sql = "update Customer set hoTen = :hoTen, diaChi = :diaChi, cmnd = :cmnd, sdt = :sdt, email = :email where maKH = :maKH";
+      tr.begin();
+      Query query = session.createQuery(sql);
+      query.setParameter("hoTen", customer.getHoTen());
+      query.setParameter("diaChi", customer.getDiaChi());
+      query.setParameter("cmnd", customer.getCmnd());
+      query.setParameter("sdt", customer.getSdt());
+      query.setParameter("email", customer.getEmail());
+      query.setParameter("maKH", customer.getMaKH());
+      if(query.executeUpdate() > 0) {
+        result = true;
+      }
+      tr.commit();
+    } catch (Exception e) {
+      tr.rollback();
+      e.printStackTrace();
+    }
+    return result;
   }
 }

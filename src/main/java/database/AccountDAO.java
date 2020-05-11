@@ -9,10 +9,18 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import javax.persistence.Query;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+
 import entites.Account;
 
 public class AccountDAO extends GeneralCRUD<Account>{
 
+  private SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+  
   public AccountDAO() {
     super(Account.class);
   }
@@ -61,5 +69,46 @@ public class AccountDAO extends GeneralCRUD<Account>{
       e.printStackTrace();
     }
     return false;
+  }
+  public boolean updateAccount(Account account, String userNameOld) {
+    MessageDigest md;
+    boolean result = false;
+    try {
+      Account ac = get(userNameOld);
+      System.out.println(ac.getSalt());
+      md = MessageDigest.getInstance("SHA-256");
+      String merge = account.getPasswordHash() + ac.getSalt();
+      byte[] res = md.digest(merge.getBytes(StandardCharsets.UTF_8));
+      String realHash = toHexString(res);
+      if (!realHash.equals(ac.getPasswordHash())) {
+        account = new Account(account.getUsername(), account.getPasswordHash());
+        merge = account.getPasswordHash() + account.getSalt();
+        System.out.println(account.getSalt());
+        res = md.digest(merge.getBytes(StandardCharsets.UTF_8));
+        realHash = toHexString(res);
+      }
+      account.setPasswordHash(realHash);
+      Session session = sessionFactory.getCurrentSession();
+      Transaction tr = session.getTransaction();
+      try {
+        String sql = "update Account set username = :username, passwordHash = :password, salt = :salt where username = :usernameold";
+        tr.begin();
+        Query query = session.createQuery(sql);
+        query.setParameter("username", account.getUsername());
+        query.setParameter("password", account.getPasswordHash());
+        query.setParameter("salt", account.getSalt());
+        query.setParameter("usernameold", userNameOld);
+        if(query.executeUpdate() > 0) {
+          result = true;
+        }
+        tr.commit();
+      } catch (Exception e) {
+        tr.rollback();
+        e.printStackTrace();
+      }
+    } catch (NoSuchAlgorithmException e) {
+      e.printStackTrace();
+    }
+    return result;
   }
 }
