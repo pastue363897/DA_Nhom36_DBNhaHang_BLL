@@ -6,7 +6,7 @@
 package entites;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -26,8 +26,8 @@ public class TTBanDat implements Serializable{
   @ManyToOne
   @JoinColumn(name = "khachHang")
   private Customer khachHang;
-  private Date ngayDatBan;
-  private Date ngayPhucVu;
+  private Timestamp ngayDatBan;
+  private Timestamp ngayPhucVu;
   @ManyToOne
   @JoinColumn(name = "banAn")
   private BanAn banAn;
@@ -42,7 +42,7 @@ public class TTBanDat implements Serializable{
   public TTBanDat() {
     super();
   }
-  public TTBanDat(String maBD, Customer khachHang, Date ngayDatBan, Date ngayPhucVu, BanAn banAn, long tongTien,
+  public TTBanDat(String maBD, Customer khachHang, Timestamp ngayDatBan, Timestamp ngayPhucVu, BanAn banAn, long tongTien,
       boolean daThanhToan, boolean daHuy, List<CTTTBanDatMonAn> dsMonAn) {
     super();
     this.maBD = maBD;
@@ -54,6 +54,14 @@ public class TTBanDat implements Serializable{
     this.daThanhToan = daThanhToan;
     this.daHuy = daHuy;
     this.dsMonAn = dsMonAn;
+  }
+  
+  public TTBanDat(Customer khachHang, Timestamp ngayDatBan, Timestamp ngayPhucVu, BanAn banAn) {
+    super();
+    this.khachHang = khachHang;
+    this.ngayDatBan = ngayDatBan;
+    this.ngayPhucVu = ngayPhucVu;
+    this.banAn = banAn;
   }
   public String getMaBD() {
     return maBD;
@@ -67,16 +75,16 @@ public class TTBanDat implements Serializable{
   public void setKhachHang(Customer khachHang) {
     this.khachHang = khachHang;
   }
-  public Date getNgayDatBan() {
+  public Timestamp getNgayDatBan() {
     return ngayDatBan;
   }
-  public void setNgayDatBan(Date ngayDatBan) {
+  public void setNgayDatBan(Timestamp ngayDatBan) {
     this.ngayDatBan = ngayDatBan;
   }
-  public Date getNgayPhucVu() {
+  public Timestamp getNgayPhucVu() {
     return ngayPhucVu;
   }
-  public void setNgayPhucVu(Date ngayPhucVu) {
+  public void setNgayPhucVu(Timestamp ngayPhucVu) {
     this.ngayPhucVu = ngayPhucVu;
   }
   public BanAn getBanAn() {

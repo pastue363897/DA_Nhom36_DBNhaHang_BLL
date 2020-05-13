@@ -15,7 +15,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import entites.BanAn;
-import entites.MonAn;
 
 public class BanAnDAO extends GeneralCRUD<BanAn> {
 
@@ -76,15 +75,15 @@ public class BanAnDAO extends GeneralCRUD<BanAn> {
 		banAn.setHinhAnh(newPath);
 		return this.update(banAn);
 	}
-	public List<MonAn> danhSachMonAnCoTheDat() {
+	public List<BanAn> danhSachBanAnCoTheDat() {
 	  SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
     Session session = sessionFactory.getCurrentSession();
     Transaction tr = session.getTransaction();
-    List<MonAn> list = null;
+    List<BanAn> list = null;
     try {
       tr.begin();
       String sql = "select * from BanAn where isDeleted = 0";
-      list = session.createNativeQuery(sql, MonAn.class).getResultList();
+      list = session.createNativeQuery(sql, BanAn.class).getResultList();
       tr.commit();
     } catch (Exception e) {
       tr.rollback();
@@ -93,7 +92,7 @@ public class BanAnDAO extends GeneralCRUD<BanAn> {
     return list;
   }
   
-	public List<BanAn> danhSachBonAnHome(int count) {
+	public List<BanAn> danhSachBanAnHome(int count) {
 	  SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 	  Session session = sessionFactory.getCurrentSession();
     Transaction tr = session.getTransaction();
