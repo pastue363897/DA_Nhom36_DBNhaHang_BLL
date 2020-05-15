@@ -5,12 +5,16 @@
 
 package database;
 
+import java.util.List;
+
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
+import entites.CTTTBanDatMonAn;
 import entites.ChiTietThanhToan;
 import entites.MonAn;
 import entites.TTBanDat;
@@ -78,6 +82,21 @@ public class TTBanDatDAO extends GeneralCRUD<TTBanDat> {
       session.getTransaction().rollback();
     }
     return result;
+  }
+  public List<TTBanDat> getDSTTBanDatTheoCustomer(String maKH){
+    Session session = sessionFactory.getCurrentSession();
+    Transaction tr = session.getTransaction();
+    List<TTBanDat> list = null;
+    try {
+      tr.begin();
+      String sql = "select b from TTBanDat b join fetch b.dsMonAn where khachHang = '" + maKH + "'";
+      list = session.createQuery(sql, TTBanDat.class).getResultList();
+      tr.commit();
+    } catch (Exception e) {
+      tr.rollback();
+      e.printStackTrace();
+    }
+    return list;
   }
 
 }

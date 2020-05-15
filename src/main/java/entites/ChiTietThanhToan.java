@@ -6,12 +6,10 @@
 package entites;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -23,7 +21,7 @@ public class ChiTietThanhToan implements Serializable {
 	private long tongTien;
 	private long tienDaDua;
 	private long tienThoiLai;
-	private Date ngayThanhToan;
+	private Timestamp ngayThanhToan;
 	public String getMaHD() {
 		return maHD;
 	}
@@ -48,14 +46,14 @@ public class ChiTietThanhToan implements Serializable {
 	public void setTienThoiLai(long tienThoiLai) {
 		this.tienThoiLai = tienThoiLai;
 	}
-	public Date getNgayThanhToan() {
+	public Timestamp getNgayThanhToan() {
 		return ngayThanhToan;
 	}
-	public void setNgayThanhToan(Date ngayThanhToan) {
+	public void setNgayThanhToan(Timestamp ngayThanhToan) {
 		this.ngayThanhToan = ngayThanhToan;
 	}
 	public ChiTietThanhToan(String maHD, long tongTien, long tienDaDua, long tienThoiLai,
-			Date ngayThanhToan) {
+			Timestamp ngayThanhToan) {
 		super();
 		this.maHD = maHD;
 		this.tongTien = tongTien;
