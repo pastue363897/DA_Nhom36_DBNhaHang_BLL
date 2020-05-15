@@ -7,9 +7,9 @@ package database;
 
 import entites.CTTTBanDatMonAn;
 
-public class CTTTTBanDatMonAnDAO extends GeneralCRUD<CTTTBanDatMonAn>{
+public class CTTTBanDatMonAnDAO extends GeneralCRUD<CTTTBanDatMonAn>{
 
-  public CTTTTBanDatMonAnDAO() {
+  public CTTTBanDatMonAnDAO() {
     super(CTTTBanDatMonAn.class);
   }
   
