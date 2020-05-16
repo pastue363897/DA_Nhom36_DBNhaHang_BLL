@@ -63,7 +63,13 @@ public class HoaDonBanDatDAO extends GeneralCRUD<HoaDonBanDat> {
   public String addBanDat(HoaDonBanDat ttBD) {
     ttBD.setMaBD(generateID());
     return this.save(ttBD);
-  }/*
+  }
+  
+  public boolean addBanDatVL(HoaDonBanDat ttBD) {
+    ttBD.setMaBD(generateID());
+    return this.saveOrUpdate(ttBD);
+  }
+  /*
   public boolean updateTongTien(String maBD, long tongTien) {
     Session session = sessionFactory.getCurrentSession();
     session.getTransaction().begin();

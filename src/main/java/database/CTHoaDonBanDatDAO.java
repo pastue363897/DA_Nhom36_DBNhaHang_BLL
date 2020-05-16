@@ -20,6 +20,21 @@ public class CTHoaDonBanDatDAO extends GeneralCRUD<CTHoaDonBanDat>{
     super(CTHoaDonBanDat.class);
   }
   
+  public boolean addCTHoaDonBanDat(CTHoaDonBanDat ctHoaDonBanDat) {
+	  Session session = sessionFactory.getCurrentSession();
+	    Transaction tr = session.getTransaction();
+	    try {
+	      tr.begin();
+	      session.save(ctHoaDonBanDat);
+	      tr.commit();
+	      return true;
+	    } catch (Exception e) {
+	      tr.rollback();
+	      e.printStackTrace();
+	    }
+	    return false;
+  }
+  
   public List<CTHoaDonBanDat> getDSCTTBanDatMonAnTheoMaBD(String maBD){
     Session session = sessionFactory.getCurrentSession();
     Transaction tr = session.getTransaction();

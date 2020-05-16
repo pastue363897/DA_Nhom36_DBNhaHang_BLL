@@ -15,6 +15,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+
 import entites.CTHoaDonBanDat;
 import entites.MonAn;
 
@@ -134,4 +135,28 @@ public class MonAnDAO extends GeneralCRUD<MonAn> {
     }
     return list;
   }
+  
+  public List<MonAn> timMonAn(String keyword) {
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+	    Session session = sessionFactory.getCurrentSession();
+	    Transaction tr = session.getTransaction();
+	    List<MonAn> list = null;
+	    try {
+	      tr.begin();
+	      int num = Integer.parseInt(keyword);
+	      String sql = "select * from MonAn where daHuy = 0 and ( tenMA like '%" + keyword + "%' OR moTaMA like '%" + keyword +
+	    		  "%' OR nguyenLieu like '%" + keyword + "%' OR soLuongNguoi = " + num + ")";
+	      list = session.createNativeQuery(sql, MonAn.class).getResultList();
+	      tr.commit();
+	    } catch (NumberFormatException e) {
+	    	String sql = "select * from MonAn where daHuy = 0 and ( tenMA like '%" + keyword + "%' OR moTaMA like '%" + keyword +
+		    		  "%' OR nguyenLieu like '%" + keyword + "%' OR soLuongNguoi = " + 0 + ")";
+	    	list = session.createNativeQuery(sql, MonAn.class).getResultList();
+		    tr.commit();	    	
+	    } catch (Exception e) {
+	      tr.rollback();
+	      e.printStackTrace();
+	    }
+	    return list;
+	}
 }

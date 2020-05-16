@@ -109,4 +109,30 @@ public class BanAnDAO extends GeneralCRUD<BanAn> {
     }
     return list;
 	}
+	
+	public List<BanAn> timBanAn(String keyword) {
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+	    Session session = sessionFactory.getCurrentSession();
+	    Transaction tr = session.getTransaction();
+	    List<BanAn> list = null;
+	    try {
+	      tr.begin();
+	      int num = Integer.parseInt(keyword);
+	      String sql = "select * from BanAn where coBan = 1 and ( kySoBA like '%" + keyword + "%' OR moTaBA like '%" + keyword + "%' OR soLuongGhe = "
+	    		  + num + ")";
+	      System.out.println(sql);
+	      list = session.createNativeQuery(sql, BanAn.class).getResultList();
+	      tr.commit();
+	    } catch (NumberFormatException e) {
+	      String sql = "select * from BanAn where coBan = 1 and ( kySoBA like '%" + keyword + "%' OR moTaBA like '%" + keyword + "%' OR soLuongGhe = "
+	    		  + 0 + ")";
+	      System.out.println(sql);
+	      list = session.createNativeQuery(sql, BanAn.class).getResultList();
+	      tr.commit();
+	    } catch (Exception e) {
+	      tr.rollback();
+	      e.printStackTrace();
+	    }
+	    return list;
+	}
 }

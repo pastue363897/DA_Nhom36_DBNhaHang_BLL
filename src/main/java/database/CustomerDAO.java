@@ -89,6 +89,47 @@ public class CustomerDAO extends GeneralCRUD<Customer>{
     }
     return false;
   }
+  
+  private String getVLLastUsedID() {
+    Session session = sessionFactory.getCurrentSession();
+    session.getTransaction().begin();
+    String preparedQL = "select top 1 * from KhachHang where maKH like 'VL%' order by maKH desc";
+    try {
+      Customer c = (Customer) session.createNativeQuery(preparedQL, Customer.class).getSingleResult();
+      session.getTransaction().commit();
+      return c.getTaiKhoan().getMaTK();
+    } catch (NoResultException ex) {
+      session.getTransaction().commit();
+      return "";
+    }
+  }
+  private String generateVLID() {
+    String lastUsed = getVLLastUsedID();
+    if (lastUsed.equals("")) {
+      return "VL000001";
+    }
+    String number = lastUsed.substring(2);
+    return "VL" + String.format("%06d", Integer.parseInt(number) + 1);
+  }
+  
+  public boolean addVLCustomer(Customer customer) {
+    AccountDAO accDao = new AccountDAO();
+    customer.getTaiKhoan().setMaTK(generateVLID());
+    accDao.addAccount(customer.getTaiKhoan());
+    Session session = sessionFactory.getCurrentSession();
+    Transaction tr = session.getTransaction();
+    try {
+      tr.begin();
+      session.save(customer);
+      tr.commit();
+      return true;
+    } catch (Exception e) {
+      tr.rollback();
+      e.printStackTrace();
+    }
+    return false;
+  }
+  
   public boolean updateCustomer(Customer customer) {
     Session session = sessionFactory.getCurrentSession();
     Transaction tr = session.getTransaction();
