@@ -7,6 +7,7 @@ package entites;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -18,17 +19,31 @@ import net.bytebuddy.utility.RandomString;
 public class Account implements Serializable{
   private static final long serialVersionUID = -2609248807630820423L;
   @Id
+  private String maTK;
+  @Column(unique = true)
   private String username;
   private String passwordHash;
   private String salt;
   public Account() {
     super();
   }
+  public Account(String username, String passwordHash, String salt) {
+    super();
+    this.username = username;
+    this.passwordHash = passwordHash;
+    this.salt = salt;
+  }
   public Account(String username, String passwordHash) {
     super();
     this.username = username;
     this.passwordHash = passwordHash;
     setSalt();
+  }
+  public String getMaTK() {
+    return maTK;
+  }
+  public void setMaTK(String maTK) {
+    this.maTK = maTK;
   }
   public String getUsername() {
     return username;
@@ -45,12 +60,12 @@ public class Account implements Serializable{
   public String getSalt() {
     return salt;
   }
-  private void setSalt() {
+  public void setSalt() {
     this.salt = new RandomString(15).nextString();
   }
   @Override
   public String toString() {
-    return "TaiKhoan [username=" + username + ", passwordHash=" + passwordHash + ", salt=" + salt + "]";
+    return "Account [maTK=" + maTK + ", username=" + username + ", passwordHash=" + passwordHash + ", salt=" + salt
+        + "]";
   }
-  
 }

@@ -10,23 +10,27 @@ import java.sql.Timestamp;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "ChiTietThanhToan")
-public class ChiTietThanhToan implements Serializable {
+@Table(name = "HoaDon")
+public class HoaDon implements Serializable {
 	private static final long serialVersionUID = 1631184720491949435L;
 	@Id
-	private String maHD;
+	@OneToOne
+	@JoinColumn(name = "maHD", referencedColumnName = "maBD")
+	private TTBanDat ttBanDat;
 	private long tongTien;
 	private long tienDaDua;
 	private long tienThoiLai;
 	private Timestamp ngayThanhToan;
-	public String getMaHD() {
-		return maHD;
+	public TTBanDat getMaHD() {
+		return ttBanDat;
 	}
-	public void setMaHD(String maHD) {
-		this.maHD = maHD;
+	public void setMaHD(TTBanDat ttBanDat) {
+		this.ttBanDat = ttBanDat;
 	}
 	public long getTongTien() {
 		return tongTien;
@@ -52,23 +56,23 @@ public class ChiTietThanhToan implements Serializable {
 	public void setNgayThanhToan(Timestamp ngayThanhToan) {
 		this.ngayThanhToan = ngayThanhToan;
 	}
-	public ChiTietThanhToan(String maHD, long tongTien, long tienDaDua, long tienThoiLai,
+	public HoaDon(TTBanDat ttBanDat, long tongTien, long tienDaDua, long tienThoiLai,
 			Timestamp ngayThanhToan) {
 		super();
-		this.maHD = maHD;
+		this.ttBanDat = ttBanDat;
 		this.tongTien = tongTien;
 		this.tienDaDua = tienDaDua;
 		this.tienThoiLai = tienThoiLai;
 		this.ngayThanhToan = ngayThanhToan;
 	}
-	public ChiTietThanhToan() {
+	public HoaDon() {
 		super();
 	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((maHD == null) ? 0 : maHD.hashCode());
+		result = prime * result + ((ttBanDat == null) ? 0 : ttBanDat.hashCode());
 		return result;
 	}
 	@Override
@@ -79,17 +83,17 @@ public class ChiTietThanhToan implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ChiTietThanhToan other = (ChiTietThanhToan) obj;
-		if (maHD == null) {
-			if (other.maHD != null)
+		HoaDon other = (HoaDon) obj;
+		if (ttBanDat == null) {
+			if (other.ttBanDat != null)
 				return false;
-		} else if (!maHD.equals(other.maHD))
+		} else if (!ttBanDat.equals(other.ttBanDat))
 			return false;
 		return true;
 	}
 	@Override
 	public String toString() {
-		return "ChiTietThanhToan [maHD=" + maHD + ", tongTien=" + tongTien + ", tienDaDua=" + tienDaDua
+		return "HoaDon [ttBanDat=" + ttBanDat + ", tongTien=" + tongTien + ", tienDaDua=" + tienDaDua
 				+ ", tienThoiLai=" + tienThoiLai + ", ngayThanhToan=" + ngayThanhToan + "]";
 	}
 }

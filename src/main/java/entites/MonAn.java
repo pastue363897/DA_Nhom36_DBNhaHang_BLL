@@ -23,13 +23,11 @@ public class MonAn implements Serializable{
   private int soLuongNguoi;
   private String hinhAnhMA;
   private long giaTien;
-  private boolean isUsable;
-  private boolean isDeleted;
+  private boolean daHuy;
   public MonAn() {
     super();
   }
-  public MonAn(String maMA, String tenMA, String moTaMA, int soLuongNguoi, String hinhAnhMA, long giaTien,
-      boolean isUsable, boolean isDeleted) {
+  public MonAn(String maMA, String tenMA, String moTaMA, int soLuongNguoi, String hinhAnhMA, long giaTien, boolean daHuy) {
     super();
     this.maMA = maMA;
     this.tenMA = tenMA;
@@ -37,8 +35,7 @@ public class MonAn implements Serializable{
     this.soLuongNguoi = soLuongNguoi;
     this.hinhAnhMA = hinhAnhMA;
     this.giaTien = giaTien;
-    this.isUsable = isUsable;
-    this.isDeleted = isDeleted;
+    this.daHuy = daHuy;
   }
   public MonAn(String tenMA, String moTaMA, int soLuongNguoi, String hinhAnhMA, long giaTien) {
     super();
@@ -47,12 +44,11 @@ public class MonAn implements Serializable{
     this.soLuongNguoi = soLuongNguoi;
     this.hinhAnhMA = hinhAnhMA;
     this.giaTien = giaTien;
-    this.isUsable = false;
-    this.isDeleted = false;
+    this.daHuy = false;
   }
   
   public MonAn(String maMA, String tenMA, String nguyenLieu, String moTaMA, int soLuongNguoi, String hinhAnhMA,
-      long giaTien, boolean isUsable, boolean isDeleted) {
+      long giaTien, boolean daHuy) {
     super();
     this.maMA = maMA;
     this.tenMA = tenMA;
@@ -61,8 +57,7 @@ public class MonAn implements Serializable{
     this.soLuongNguoi = soLuongNguoi;
     this.hinhAnhMA = hinhAnhMA;
     this.giaTien = giaTien;
-    this.isUsable = isUsable;
-    this.isDeleted = isDeleted;
+    this.daHuy = daHuy;
   }
   public String getMaMA() {
     return maMA;
@@ -107,23 +102,16 @@ public class MonAn implements Serializable{
   public void setGiaTien(long giaTien) {
     this.giaTien = giaTien;
   }
-  public boolean isUsable() {
-    return isUsable;
+  public boolean isDaHuy() {
+    return daHuy;
   }
-  public void setUsable(boolean isUsable) {
-    this.isUsable = isUsable;
-  }
-  public boolean isDeleted() {
-    return isDeleted;
-  }
-  public void setDeleted(boolean isDeleted) {
-    this.isDeleted = isDeleted;
+  public void setDaHuy(boolean daHuy) {
+    this.daHuy = daHuy;
   }
   @Override
   public String toString() {
-    return "MonAn [maMA=" + maMA + ", tenMA=" + tenMA + ", moTaMA=" + moTaMA + ", soLuongNguoi=" + soLuongNguoi
-        + ", hinhAnhMA=" + hinhAnhMA + ", giaTien=" + giaTien + ", isUsable=" + isUsable + ", isDeleted=" + isDeleted
+    return "MonAn [maMA=" + maMA + ", tenMA=" + tenMA + ", nguyenLieu=" + nguyenLieu + ", moTaMA=" + moTaMA
+        + ", soLuongNguoi=" + soLuongNguoi + ", hinhAnhMA=" + hinhAnhMA + ", giaTien=" + giaTien + ", daHuy=" + daHuy
         + "]";
   }
-  
 }

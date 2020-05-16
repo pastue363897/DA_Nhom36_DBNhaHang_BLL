@@ -17,26 +17,19 @@ import javax.persistence.Table;
 @Table(name = "NguoiQuanLy")
 public class Admin implements Serializable{
   private static final long serialVersionUID = -6175789101923072450L;
-  @Id
-  private String maNV;
+
   private String hoTen;
+  @Id
   @OneToOne
-  @JoinColumn(name = "taiKhoan")
+  @JoinColumn(name = "maNV", referencedColumnName = "maTK")
   private Account taiKhoan;
   public Admin() {
     super();
   }
-  public Admin(String maNV, String hoTen, Account taiKhoan) {
+  public Admin(String hoTen, Account taiKhoan) {
     super();
-    this.maNV = maNV;
     this.hoTen = hoTen;
     this.taiKhoan = taiKhoan;
-  }
-  public String getMaNV() {
-    return maNV;
-  }
-  public void setMaNV(String maNV) {
-    this.maNV = maNV;
   }
   public String getHoTen() {
     return hoTen;
@@ -52,7 +45,7 @@ public class Admin implements Serializable{
   }
   @Override
   public String toString() {
-    return "NguoiQuanLy [maNV=" + maNV + ", hoTen=" + hoTen + ", taiKhoan=" + taiKhoan.toString() + "]";
+    return "Admin [hoTen=" + hoTen + ", taiKhoan=" + taiKhoan + "]";
   }
   
 }

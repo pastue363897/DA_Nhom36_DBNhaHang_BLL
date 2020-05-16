@@ -24,34 +24,27 @@ public class TTBanDat implements Serializable{
   @Id
   private String maBD;
   @ManyToOne
-  @JoinColumn(name = "khachHang")
+  @JoinColumn(name = "maKH")
   private Customer khachHang;
   private Timestamp ngayDatBan;
   private Timestamp ngayPhucVu;
   @ManyToOne
-  @JoinColumn(name = "banAn")
+  @JoinColumn(name = "maBA")
   private BanAn banAn;
-  private long tongTien;
-  private boolean daThanhToan;
   private boolean daHuy;
   @OneToMany(mappedBy = "ttBanDat")
   private List<CTTTBanDatMonAn> dsMonAn;
-  @OneToOne
-  @JoinColumn(name = "chiTietThanhToan", referencedColumnName = "maHD")
-  private ChiTietThanhToan chiTietThanhToan;
   public TTBanDat() {
     super();
   }
-  public TTBanDat(String maBD, Customer khachHang, Timestamp ngayDatBan, Timestamp ngayPhucVu, BanAn banAn, long tongTien,
-      boolean daThanhToan, boolean daHuy, List<CTTTBanDatMonAn> dsMonAn) {
+  public TTBanDat(String maBD, Customer khachHang, Timestamp ngayDatBan, Timestamp ngayPhucVu, BanAn banAn,
+    boolean daHuy, List<CTTTBanDatMonAn> dsMonAn) {
     super();
     this.maBD = maBD;
     this.khachHang = khachHang;
     this.ngayDatBan = ngayDatBan;
     this.ngayPhucVu = ngayPhucVu;
     this.banAn = banAn;
-    this.tongTien = tongTien;
-    this.daThanhToan = daThanhToan;
     this.daHuy = daHuy;
     this.dsMonAn = dsMonAn;
   }
@@ -93,18 +86,6 @@ public class TTBanDat implements Serializable{
   public void setBanAn(BanAn banAn) {
     this.banAn = banAn;
   }
-  public long getTongTien() {
-    return tongTien;
-  }
-  public void setTongTien(long tongTien) {
-    this.tongTien = tongTien;
-  }
-  public boolean isDaThanhToan() {
-    return daThanhToan;
-  }
-  public void setDaThanhToan(boolean daThanhToan) {
-    this.daThanhToan = daThanhToan;
-  }
   public boolean isDaHuy() {
     return daHuy;
   }
@@ -117,17 +98,17 @@ public class TTBanDat implements Serializable{
   public void setDsMonAn(List<CTTTBanDatMonAn> dsMonAn) {
     this.dsMonAn = dsMonAn;
   }
-	public ChiTietThanhToan getChiTietThanhToan() {
-		return chiTietThanhToan;
-	}
-	public void setChiTietThanhToan(ChiTietThanhToan chiTietThanhToan) {
-		this.chiTietThanhToan = chiTietThanhToan;
-	}
-	@Override
-	public String toString() {
-		return "TTBanDat [maBD=" + maBD + ", khachHang=" + khachHang + ", ngayDatBan=" + ngayDatBan + ", ngayPhucVu="
-				+ ngayPhucVu + ", banAn=" + banAn + ", tongTien=" + tongTien + ", daThanhToan=" + daThanhToan
-				+ ", daHuy=" + daHuy + ", dsMonAn=" + dsMonAn + ", chiTietThanhToan=" + chiTietThanhToan + "]";
-	}
-    
+  public long tinhTongTien() {
+     long tt = banAn.getPhuGia();
+     for(CTTTBanDatMonAn s : dsMonAn) {
+       tt += s.getDonGia() * s.getSoLuong();
+     }
+     return tt;
+  }
+  @Override
+  public String toString() {
+    return "TTBanDat [maBD=" + maBD + ", khachHang=" + khachHang + ", ngayDatBan=" + ngayDatBan + ", ngayPhucVu="
+        + ngayPhucVu + ", banAn=" + banAn + ", daHuy=" + daHuy + ", dsMonAn=" + dsMonAn + "]";
+  }
+  
 }

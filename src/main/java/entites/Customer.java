@@ -18,15 +18,15 @@ import javax.persistence.Table;
 public class Customer implements Serializable{
   private static final long serialVersionUID = -2418817978735275622L;
   @Id
-  private String maKH;
+  @OneToOne
+  @JoinColumn(name = "maKH", referencedColumnName = "maTK")
+  private Account taiKhoan;
   private String hoTen;
   private String diaChi;
   private String cmnd;
   private String sdt;
   private String email;
-  @OneToOne
-  @JoinColumn(name = "taiKhoan")
-  private Account taiKhoan;
+  
   public Customer() {
     super();
   }
@@ -38,13 +38,6 @@ public class Customer implements Serializable{
     this.sdt = sdt;
     this.email = email;
     this.taiKhoan = taiKhoan;
-  }
-
-  public String getMaKH() {
-    return maKH;
-  }
-  public void setMaKH(String maKH) {
-    this.maKH = maKH;
   }
   public String getHoTen() {
     return hoTen;
@@ -84,7 +77,7 @@ public class Customer implements Serializable{
   }
   @Override
   public String toString() {
-    return "KhachHang [maKH=" + maKH + ", hoTen=" + hoTen + ", diaChi=" + diaChi + ", cmnd=" + cmnd + ", taiKhoan="
+    return "KhachHang [hoTen=" + hoTen + ", diaChi=" + diaChi + ", cmnd=" + cmnd + ", taiKhoan="
         + taiKhoan.toString() + "]";
   }
   

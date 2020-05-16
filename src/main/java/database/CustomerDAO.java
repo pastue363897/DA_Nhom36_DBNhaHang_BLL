@@ -34,7 +34,7 @@ public class CustomerDAO extends GeneralCRUD<Customer>{
     try {
       Customer c = (Customer) session.createNativeQuery(preparedQL, Customer.class).getSingleResult();
       session.getTransaction().commit();
-      return c.getMaKH();
+      return c.getTaiKhoan().getMaTK();
     } catch (NoResultException ex) {
       session.getTransaction().commit();
       return "";
@@ -61,7 +61,7 @@ public class CustomerDAO extends GeneralCRUD<Customer>{
     Transaction tr = session.getTransaction();
     Customer c = null;
     try {
-      String preparedQL = "select top 1 * from KhachHang where taiKhoan = '" + account.getUsername() + "'";
+      String preparedQL = "select top 1 * from KhachHang where maKH = '" + account.getMaTK() + "'";
       tr.begin();
       c = session.createNativeQuery(preparedQL, Customer.class).getSingleResult();
       tr.commit();
@@ -73,9 +73,19 @@ public class CustomerDAO extends GeneralCRUD<Customer>{
   }
   
   public boolean addCustomer(Customer customer) {
-    customer.setMaKH(generateID());
-    if (save(customer) != null) {
+    AccountDAO accDao = new AccountDAO();
+    customer.getTaiKhoan().setMaTK(generateID());
+    accDao.addAccount(customer.getTaiKhoan());
+    Session session = sessionFactory.getCurrentSession();
+    Transaction tr = session.getTransaction();
+    try {
+      tr.begin();
+      session.save(customer);
+      tr.commit();
       return true;
+    } catch (Exception e) {
+      tr.rollback();
+      e.printStackTrace();
     }
     return false;
   }
@@ -92,7 +102,7 @@ public class CustomerDAO extends GeneralCRUD<Customer>{
       query.setParameter("cmnd", customer.getCmnd());
       query.setParameter("sdt", customer.getSdt());
       query.setParameter("email", customer.getEmail());
-      query.setParameter("maKH", customer.getMaKH());
+      query.setParameter("maKH", customer.getTaiKhoan().getMaTK());
       if(query.executeUpdate() > 0) {
         result = true;
       }

@@ -15,7 +15,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import entites.CTTTBanDatMonAn;
-import entites.ChiTietThanhToan;
+import entites.HoaDon;
 import entites.MonAn;
 import entites.TTBanDat;
 
@@ -64,7 +64,7 @@ public class TTBanDatDAO extends GeneralCRUD<TTBanDat> {
   public String addBanDat(TTBanDat ttBD) {
     ttBD.setMaBD(generateID());
     return this.save(ttBD);
-  }
+  }/*
   public boolean updateTongTien(String maBD, long tongTien) {
     Session session = sessionFactory.getCurrentSession();
     session.getTransaction().begin();
@@ -82,14 +82,14 @@ public class TTBanDatDAO extends GeneralCRUD<TTBanDat> {
       session.getTransaction().rollback();
     }
     return result;
-  }
+  }*/
   public List<TTBanDat> getDSTTBanDatTheoCustomer(String maKH){
     Session session = sessionFactory.getCurrentSession();
     Transaction tr = session.getTransaction();
     List<TTBanDat> list = null;
     try {
       tr.begin();
-      String sql = "select b from TTBanDat b join fetch b.dsMonAn where khachHang = '" + maKH + "'";
+      String sql = "select b from TTBanDat b join fetch b.dsMonAn where maKH = '" + maKH + "'";
       list = session.createQuery(sql, TTBanDat.class).getResultList();
       tr.commit();
     } catch (Exception e) {
@@ -98,5 +98,34 @@ public class TTBanDatDAO extends GeneralCRUD<TTBanDat> {
     }
     return list;
   }
-
+  public List<TTBanDat> getDSTTBanDat(){
+    Session session = sessionFactory.getCurrentSession();
+    Transaction tr = session.getTransaction();
+    List<TTBanDat> list = null;
+    try {
+      tr.begin();
+      String sql = "select b from TTBanDat b join fetch b.dsMonAn";
+      list = session.createQuery(sql, TTBanDat.class).getResultList();
+      tr.commit();
+    } catch (Exception e) {
+      tr.rollback();
+      e.printStackTrace();
+    }
+    return list;
+  }
+  public TTBanDat getTTBanDat(String maBD){
+    Session session = sessionFactory.getCurrentSession();
+    Transaction tr = session.getTransaction();
+    List<TTBanDat> list = null;
+    try {
+      tr.begin();
+      String sql = "select b from TTBanDat b join fetch b.dsMonAn where b.maBD = '" + maBD + "'";
+      list = session.createQuery(sql, TTBanDat.class).getResultList();
+      tr.commit();
+    } catch (Exception e) {
+      tr.rollback();
+      e.printStackTrace();
+    }
+    return list != null ? list.get(0) : null;
+  }
 }

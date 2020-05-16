@@ -82,7 +82,7 @@ public class BanAnDAO extends GeneralCRUD<BanAn> {
     List<BanAn> list = null;
     try {
       tr.begin();
-      String sql = "select * from BanAn where isDeleted = 0";
+      String sql = "select * from BanAn where coBan = 1";
       list = session.createNativeQuery(sql, BanAn.class).getResultList();
       tr.commit();
     } catch (Exception e) {
@@ -100,7 +100,7 @@ public class BanAnDAO extends GeneralCRUD<BanAn> {
     try {
       tr.begin();
       String sql = "select top " + count + " * from BanAn where maBA in (select top " + count
-          + " maBA from BanAn where isDeleted = 0 order by newid())";
+          + " maBA from BanAn where coBan = 1 order by newid())";
       list = session.createNativeQuery(sql, BanAn.class).getResultList();
       tr.commit();
     } catch (Exception e) {

@@ -21,11 +21,11 @@ public class CTTTBanDatMonAn implements Serializable{
   private static final long serialVersionUID = -8856029055109251762L;
   @Id
   @ManyToOne
-  @JoinColumn(name = "ttBanDat", referencedColumnName = "maBD")
+  @JoinColumn(name = "maBD", referencedColumnName = "maBD")
   private TTBanDat ttBanDat;
   @Id
   @ManyToOne
-  @JoinColumn(name = "monAn", referencedColumnName = "maMA")
+  @JoinColumn(name = "maMA", referencedColumnName = "maMA")
   private MonAn monAn;
   private int soLuong;
   private long donGia;

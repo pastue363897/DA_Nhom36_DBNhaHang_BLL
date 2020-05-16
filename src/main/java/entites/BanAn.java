@@ -20,34 +20,31 @@ public class BanAn implements Serializable{
   private String kySoBA;
   private int soLuongGhe;
   private String motaBA;
-  private long giaTien;
-  private boolean isUsable;
-  private boolean isDeleted;
+  private long phuGia;
+  private boolean coBan;
   private String hinhAnh;
   public BanAn() {
     super();
   }
-  public BanAn(String maBA, String kySoBA, int soLuongGhe, String motaBA, long giaTien, boolean isUsable,
+  public BanAn(String maBA, String kySoBA, int soLuongGhe, String motaBA, long giaTien, boolean coBan,
       boolean isDeleted, String hinhAnh) {
     super();
     this.maBA = maBA;
     this.kySoBA = kySoBA;
     this.soLuongGhe = soLuongGhe;
     this.motaBA = motaBA;
-    this.giaTien = giaTien;
-    this.isUsable = isUsable;
-    this.isDeleted = isDeleted;
+    this.phuGia = giaTien;
+    this.coBan = coBan;
     this.hinhAnh = hinhAnh;
   }
-  public BanAn(String kySoBA, int soLuongGhe, String motaBA, long giaTien, boolean isUsable, boolean isDeleted,
+  public BanAn(String kySoBA, int soLuongGhe, String motaBA, long giaTien, boolean coBan, boolean isDeleted,
       String hinhAnh) {
     super();
     this.kySoBA = kySoBA;
     this.soLuongGhe = soLuongGhe;
     this.motaBA = motaBA;
-    this.giaTien = giaTien;
-    this.isUsable = isUsable;
-    this.isDeleted = isDeleted;
+    this.phuGia = giaTien;
+    this.coBan = coBan;
     this.hinhAnh = hinhAnh;
   }
   public String getMaBA() {
@@ -74,23 +71,17 @@ public class BanAn implements Serializable{
   public void setMotaBA(String motaBA) {
     this.motaBA = motaBA;
   }
-  public long getGiaTien() {
-    return giaTien;
+  public long getPhuGia() {
+    return phuGia;
   }
-  public void setGiaTien(long giaTien) {
-    this.giaTien = giaTien;
+  public void setPhuGia(long phuGia) {
+    this.phuGia = phuGia;
   }
-  public boolean isUsable() {
-    return isUsable;
+  public boolean isCoBan() {
+    return coBan;
   }
-  public void setUsable(boolean isUsable) {
-    this.isUsable = isUsable;
-  }
-  public boolean isDeleted() {
-    return isDeleted;
-  }
-  public void setDeleted(boolean isDeleted) {
-    this.isDeleted = isDeleted;
+  public void setCoBan(boolean coBan) {
+    this.coBan = coBan;
   }
   public String getHinhAnh() {
     return hinhAnh;
@@ -101,7 +92,7 @@ public class BanAn implements Serializable{
   @Override
   public String toString() {
     return "BanAn [maBA=" + maBA + ", kySoBA=" + kySoBA + ", soLuongGhe=" + soLuongGhe + ", motaBA=" + motaBA
-        + ", giaTien=" + giaTien + ", isUsable=" + isUsable + ", isDeleted=" + isDeleted + ", hinhAnh=" + hinhAnh + "]";
+        + ", phuGia=" + phuGia + ", coBan=" + coBan + ", hinhAnh=" + hinhAnh + "]";
   }
   
 }

@@ -84,7 +84,7 @@ public class MonAnDAO extends GeneralCRUD<MonAn> {
     Transaction tr = session.getTransaction();
     try {
       tr.begin();
-      String sql = "select top 1 * from CTTTBanDatMonAn where monAn = '" + monAn.getMaMA() + "'";
+      String sql = "select top 1 * from CTTTBanDatMonAn where maMA = '" + monAn.getMaMA() + "'";
       CTTTBanDatMonAn ct = session.createNativeQuery(sql, CTTTBanDatMonAn.class).getSingleResult();
       tr.commit();
       if (ct != null) {
@@ -98,7 +98,7 @@ public class MonAnDAO extends GeneralCRUD<MonAn> {
   }
   
   public boolean setIsDeleted(MonAn monAn) {
-    monAn.setDeleted(true);
+    monAn.setDaHuy(true);
     return this.saveOrUpdate(monAn);
   }
   
@@ -108,7 +108,7 @@ public class MonAnDAO extends GeneralCRUD<MonAn> {
     List<MonAn> list = null;
     try {
       tr.begin();
-      String sql = "select * from MonAn where isDeleted = 0";
+      String sql = "select * from MonAn where daHuy = 0";
       list = session.createNativeQuery(sql, MonAn.class).getResultList();
       tr.commit();
     } catch (Exception e) {
@@ -125,7 +125,7 @@ public class MonAnDAO extends GeneralCRUD<MonAn> {
     try {
       tr.begin();
       String sql = "select top " + count + " * from MonAn where maMA in (select top " + count
-          + " maMA from MonAn where isDeleted = 0 order by newid())";
+          + " maMA from MonAn where daHuy = 0 order by newid())";
       list = session.createNativeQuery(sql, MonAn.class).getResultList();
       tr.commit();
     } catch (Exception e) {

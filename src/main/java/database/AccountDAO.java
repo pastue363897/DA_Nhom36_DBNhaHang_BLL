@@ -16,6 +16,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import entites.Account;
+import entites.CTTTBanDatMonAn;
 
 public class AccountDAO extends GeneralCRUD<Account>{
 
@@ -32,21 +33,44 @@ public class AccountDAO extends GeneralCRUD<Account>{
     }
     return ret;
   }
+  
+  private Account getAccountByUsername(String username) {
+    Session session = sessionFactory.getCurrentSession();
+    Transaction tr = session.getTransaction();
+    try {
+      tr.begin();
+      String sql = "select top 1 * from TaiKhoan where username = '" + username + "'";
+      Account ct = session.createNativeQuery(sql, Account.class).getSingleResult();
+      tr.commit();
+      if (ct != null) {
+        return ct;
+      }
+    } catch (Exception e) {
+      tr.rollback();
+      e.printStackTrace();
+    }
+    return null;
+  }
 
-  public int signIn(String username, String password) {
-    Account chk = get(username);
+  public int signIn(Account account) {
+    Account chk = getAccountByUsername(account.getUsername());
     if (chk == null)
       return 0;
-    String merge = password + chk.getSalt();
+    String merge = account.getPasswordHash() + chk.getSalt();
     MessageDigest md;
     try {
       md = MessageDigest.getInstance("SHA-256");
       byte[] res = md.digest(merge.getBytes(StandardCharsets.UTF_8));
       String candidateHash = toHexString(res);
       String realHash = chk.getPasswordHash();
+      System.out.println(candidateHash);
+      System.out.println(realHash);
       if(candidateHash.equalsIgnoreCase(realHash)) {
+        account.setMaTK(chk.getMaTK());
+        System.out.println("OK");
         return 1;
       }
+      System.out.println("Not OK");
       return 0;
       
     } catch (NoSuchAlgorithmException e) {
@@ -74,7 +98,8 @@ public class AccountDAO extends GeneralCRUD<Account>{
     MessageDigest md;
     boolean result = false;
     try {
-      Account ac = get(userNameOld);
+      Account ac = getAccountByUsername(userNameOld);
+      ac.setUsername(account.getUsername());
       System.out.println(ac.getSalt());
       md = MessageDigest.getInstance("SHA-256");
       String merge = account.getPasswordHash() + ac.getSalt();
@@ -87,6 +112,8 @@ public class AccountDAO extends GeneralCRUD<Account>{
         res = md.digest(merge.getBytes(StandardCharsets.UTF_8));
         realHash = toHexString(res);
       }
+      else
+        account = ac;
       account.setPasswordHash(realHash);
       Session session = sessionFactory.getCurrentSession();
       Transaction tr = session.getTransaction();

