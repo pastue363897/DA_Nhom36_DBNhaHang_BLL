@@ -14,17 +14,16 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import entites.CTTTBanDatMonAn;
-import entites.HoaDon;
+import entites.CTHoaDonBanDat;
 import entites.MonAn;
-import entites.TTBanDat;
+import entites.HoaDonBanDat;
 
-public class TTBanDatDAO extends GeneralCRUD<TTBanDat> {
+public class HoaDonBanDatDAO extends GeneralCRUD<HoaDonBanDat> {
 
   private SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
   
-	public TTBanDatDAO() {
-		super(TTBanDat.class);
+	public HoaDonBanDatDAO() {
+		super(HoaDonBanDat.class);
 	}
 	
 	/**
@@ -35,9 +34,9 @@ public class TTBanDatDAO extends GeneralCRUD<TTBanDat> {
   private String getLastUsedID() {
     Session session = sessionFactory.getCurrentSession();
     session.getTransaction().begin();
-    String preparedQL = "select top 1 * from TTBanDat order by maBD desc";
+    String preparedQL = "select top 1 * from HoaDonBanDat order by maBD desc";
     try {
-      TTBanDat b = (TTBanDat) session.createNativeQuery(preparedQL, TTBanDat.class).getSingleResult();
+      HoaDonBanDat b = (HoaDonBanDat) session.createNativeQuery(preparedQL, HoaDonBanDat.class).getSingleResult();
       session.getTransaction().commit();
       return b.getMaBD();
     } catch (NoResultException ex) {
@@ -61,7 +60,7 @@ public class TTBanDatDAO extends GeneralCRUD<TTBanDat> {
     return "BD" + String.format("%06d", Integer.parseInt(number) + 1);
   }
   
-  public String addBanDat(TTBanDat ttBD) {
+  public String addBanDat(HoaDonBanDat ttBD) {
     ttBD.setMaBD(generateID());
     return this.save(ttBD);
   }/*
@@ -83,14 +82,14 @@ public class TTBanDatDAO extends GeneralCRUD<TTBanDat> {
     }
     return result;
   }*/
-  public List<TTBanDat> getDSTTBanDatTheoCustomer(String maKH){
+  public List<HoaDonBanDat> getDSTTBanDatTheoCustomer(String maKH){
     Session session = sessionFactory.getCurrentSession();
     Transaction tr = session.getTransaction();
-    List<TTBanDat> list = null;
+    List<HoaDonBanDat> list = null;
     try {
       tr.begin();
-      String sql = "select b from TTBanDat b join fetch b.dsMonAn where maKH = '" + maKH + "'";
-      list = session.createQuery(sql, TTBanDat.class).getResultList();
+      String sql = "select b from HoaDonBanDat b join fetch b.dsMonAn where maKH = '" + maKH + "'";
+      list = session.createQuery(sql, HoaDonBanDat.class).getResultList();
       tr.commit();
     } catch (Exception e) {
       tr.rollback();
@@ -98,14 +97,14 @@ public class TTBanDatDAO extends GeneralCRUD<TTBanDat> {
     }
     return list;
   }
-  public List<TTBanDat> getDSTTBanDat(){
+  public List<HoaDonBanDat> getDSTTBanDat(){
     Session session = sessionFactory.getCurrentSession();
     Transaction tr = session.getTransaction();
-    List<TTBanDat> list = null;
+    List<HoaDonBanDat> list = null;
     try {
       tr.begin();
-      String sql = "select b from TTBanDat b join fetch b.dsMonAn";
-      list = session.createQuery(sql, TTBanDat.class).getResultList();
+      String sql = "select b from HoaDonBanDat b join fetch b.dsMonAn";
+      list = session.createQuery(sql, HoaDonBanDat.class).getResultList();
       tr.commit();
     } catch (Exception e) {
       tr.rollback();
@@ -113,14 +112,14 @@ public class TTBanDatDAO extends GeneralCRUD<TTBanDat> {
     }
     return list;
   }
-  public TTBanDat getTTBanDat(String maBD){
+  public HoaDonBanDat getTTBanDat(String maBD){
     Session session = sessionFactory.getCurrentSession();
     Transaction tr = session.getTransaction();
-    List<TTBanDat> list = null;
+    List<HoaDonBanDat> list = null;
     try {
       tr.begin();
-      String sql = "select b from TTBanDat b join fetch b.dsMonAn where b.maBD = '" + maBD + "'";
-      list = session.createQuery(sql, TTBanDat.class).getResultList();
+      String sql = "select b from HoaDonBanDat b join fetch b.dsMonAn where b.maBD = '" + maBD + "'";
+      list = session.createQuery(sql, HoaDonBanDat.class).getResultList();
       tr.commit();
     } catch (Exception e) {
       tr.rollback();

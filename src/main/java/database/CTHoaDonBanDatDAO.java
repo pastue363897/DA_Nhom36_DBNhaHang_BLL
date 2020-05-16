@@ -11,23 +11,23 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import entites.CTTTBanDatMonAn;
+import entites.CTHoaDonBanDat;
 
-public class CTTTBanDatMonAnDAO extends GeneralCRUD<CTTTBanDatMonAn>{
+public class CTHoaDonBanDatDAO extends GeneralCRUD<CTHoaDonBanDat>{
 
   private SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-  public CTTTBanDatMonAnDAO() {
-    super(CTTTBanDatMonAn.class);
+  public CTHoaDonBanDatDAO() {
+    super(CTHoaDonBanDat.class);
   }
   
-  public List<CTTTBanDatMonAn> getDSCTTBanDatMonAnTheoMaBD(String maBD){
+  public List<CTHoaDonBanDat> getDSCTTBanDatMonAnTheoMaBD(String maBD){
     Session session = sessionFactory.getCurrentSession();
     Transaction tr = session.getTransaction();
-    List<CTTTBanDatMonAn> list = null;
+    List<CTHoaDonBanDat> list = null;
     try {
       tr.begin();
-      String sql = "select * from CTTTBanDatMonAn where ttBanDat = '" + maBD + "'";
-      list = session.createNativeQuery(sql, CTTTBanDatMonAn.class).getResultList();
+      String sql = "select * from CTHoaDonBanDat where maBD = '" + maBD + "'";
+      list = session.createNativeQuery(sql, CTHoaDonBanDat.class).getResultList();
       tr.commit();
     } catch (Exception e) {
       tr.rollback();

@@ -15,34 +15,34 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "CTTTBanDatMonAn")
+@Table(name = "CTHoaDonBanDat")
 @IdClass(PK_BanDat_MonAn.class)
-public class CTTTBanDatMonAn implements Serializable{
+public class CTHoaDonBanDat implements Serializable{
   private static final long serialVersionUID = -8856029055109251762L;
   @Id
   @ManyToOne
   @JoinColumn(name = "maBD", referencedColumnName = "maBD")
-  private TTBanDat ttBanDat;
+  private HoaDonBanDat ttBanDat;
   @Id
   @ManyToOne
   @JoinColumn(name = "maMA", referencedColumnName = "maMA")
   private MonAn monAn;
   private int soLuong;
   private long donGia;
-  public CTTTBanDatMonAn() {
+  public CTHoaDonBanDat() {
     super();
   }
-  public CTTTBanDatMonAn(TTBanDat ttBanDat, MonAn monAn, int soLuong, long donGia) {
+  public CTHoaDonBanDat(HoaDonBanDat ttBanDat, MonAn monAn, int soLuong, long donGia) {
     super();
     this.ttBanDat = ttBanDat;
     this.monAn = monAn;
     this.soLuong = soLuong;
     this.donGia = donGia;
   }
-  public TTBanDat getTtBanDat() {
+  public HoaDonBanDat getTtBanDat() {
     return ttBanDat;
   }
-  public void setTtBanDat(TTBanDat ttBanDat) {
+  public void setTtBanDat(HoaDonBanDat ttBanDat) {
     this.ttBanDat = ttBanDat;
   }
   public MonAn getMonAn() {

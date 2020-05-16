@@ -15,7 +15,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import entites.CTTTBanDatMonAn;
+import entites.CTHoaDonBanDat;
 import entites.MonAn;
 
 public class MonAnDAO extends GeneralCRUD<MonAn> {
@@ -85,7 +85,7 @@ public class MonAnDAO extends GeneralCRUD<MonAn> {
     try {
       tr.begin();
       String sql = "select top 1 * from CTTTBanDatMonAn where maMA = '" + monAn.getMaMA() + "'";
-      CTTTBanDatMonAn ct = session.createNativeQuery(sql, CTTTBanDatMonAn.class).getSingleResult();
+      CTHoaDonBanDat ct = session.createNativeQuery(sql, CTHoaDonBanDat.class).getSingleResult();
       tr.commit();
       if (ct != null) {
         return true;

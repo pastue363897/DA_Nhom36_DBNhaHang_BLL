@@ -16,18 +16,16 @@ import org.hibernate.SessionFactory;
 import database.AccountDAO;
 import database.AdminDAO;
 import database.BanAnDAO;
-import database.HoaDonDAO;
 import database.CustomerDAO;
 import database.HibernateUtil;
 import database.MonAnDAO;
-import database.TTBanDatDAO;
+import database.HoaDonBanDatDAO;
 import entites.Account;
 import entites.Admin;
 import entites.BanAn;
-import entites.HoaDon;
 import entites.Customer;
 import entites.MonAn;
-import entites.TTBanDat;
+import entites.HoaDonBanDat;
 
 public class TestDatabase {
   public static void main(String[] args) {
@@ -59,7 +57,7 @@ public class TestDatabase {
     }
     
     
-    TTBanDatDAO bdMananger = new TTBanDatDAO();
+    HoaDonBanDatDAO bdMananger = new HoaDonBanDatDAO();
     BanAnDAO baMananger = new BanAnDAO();/*
     MonAnDAO maManager = new MonAnDAO();
     List<MonAn> dsMonAn = new ArrayList<MonAn>();

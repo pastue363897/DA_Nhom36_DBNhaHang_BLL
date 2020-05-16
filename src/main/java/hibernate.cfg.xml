@@ -15,10 +15,9 @@
   <mapping class="entites.Admin"/>
   <mapping class="entites.Customer"/>
   <mapping class="entites.BanAn"/>
-  <mapping class="entites.HoaDon"/>
+  <mapping class="entites.HoaDonBanDat"/>
   <mapping class="entites.MonAn"/>
-  <mapping class="entites.TTBanDat"/>
   <mapping class="entites.PK_BanDat_MonAn"/>
-  <mapping class="entites.CTTTBanDatMonAn"/>
+  <mapping class="entites.CTHoaDonBanDat"/>
  </session-factory>
 </hibernate-configuration>

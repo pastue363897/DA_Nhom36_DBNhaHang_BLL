@@ -18,8 +18,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "TTBanDat")
-public class TTBanDat implements Serializable{
+@Table(name = "HoaDonBanDat")
+public class HoaDonBanDat implements Serializable{
   private static final long serialVersionUID = -6630803645917114804L;
   @Id
   private String maBD;
@@ -33,12 +33,16 @@ public class TTBanDat implements Serializable{
   private BanAn banAn;
   private boolean daHuy;
   @OneToMany(mappedBy = "ttBanDat")
-  private List<CTTTBanDatMonAn> dsMonAn;
-  public TTBanDat() {
+  private List<CTHoaDonBanDat> dsMonAn;
+  private boolean daThanhToan;
+  private long tongTien;
+  private long tienDaDua;
+  private Timestamp ngayThanhToan;
+  public HoaDonBanDat() {
     super();
   }
-  public TTBanDat(String maBD, Customer khachHang, Timestamp ngayDatBan, Timestamp ngayPhucVu, BanAn banAn,
-    boolean daHuy, List<CTTTBanDatMonAn> dsMonAn) {
+  public HoaDonBanDat(String maBD, Customer khachHang, Timestamp ngayDatBan, Timestamp ngayPhucVu, BanAn banAn,
+    boolean daHuy, List<CTHoaDonBanDat> dsMonAn) {
     super();
     this.maBD = maBD;
     this.khachHang = khachHang;
@@ -49,7 +53,7 @@ public class TTBanDat implements Serializable{
     this.dsMonAn = dsMonAn;
   }
   
-  public TTBanDat(Customer khachHang, Timestamp ngayDatBan, Timestamp ngayPhucVu, BanAn banAn) {
+  public HoaDonBanDat(Customer khachHang, Timestamp ngayDatBan, Timestamp ngayPhucVu, BanAn banAn) {
     super();
     this.khachHang = khachHang;
     this.ngayDatBan = ngayDatBan;
@@ -92,23 +96,49 @@ public class TTBanDat implements Serializable{
   public void setDaHuy(boolean daHuy) {
     this.daHuy = daHuy;
   }
-  public List<CTTTBanDatMonAn> getDsMonAn() {
+  public List<CTHoaDonBanDat> getDsMonAn() {
     return dsMonAn;
   }
-  public void setDsMonAn(List<CTTTBanDatMonAn> dsMonAn) {
+  public void setDsMonAn(List<CTHoaDonBanDat> dsMonAn) {
     this.dsMonAn = dsMonAn;
   }
-  public long tinhTongTien() {
-     long tt = banAn.getPhuGia();
-     for(CTTTBanDatMonAn s : dsMonAn) {
-       tt += s.getDonGia() * s.getSoLuong();
-     }
-     return tt;
-  }
-  @Override
-  public String toString() {
-    return "TTBanDat [maBD=" + maBD + ", khachHang=" + khachHang + ", ngayDatBan=" + ngayDatBan + ", ngayPhucVu="
-        + ngayPhucVu + ", banAn=" + banAn + ", daHuy=" + daHuy + ", dsMonAn=" + dsMonAn + "]";
-  }
-  
+  public boolean isDaThanhToan() {
+	return daThanhToan;
+}
+	public void setDaThanhToan(boolean daThanhToan) {
+		this.daThanhToan = daThanhToan;
+	}
+	public long getTongTien() {
+		return tongTien;
+	}
+	public void setTongTien(long tongTien) {
+		this.tongTien = tongTien;
+	}
+	public long getTienDaDua() {
+		return tienDaDua;
+	}
+	public void setTienDaDua(long tienDaDua) {
+		this.tienDaDua = tienDaDua;
+	}
+	public Timestamp getNgayThanhToan() {
+		return ngayThanhToan;
+	}
+	public void setNgayThanhToan(Timestamp ngayThanhToan) {
+		this.ngayThanhToan = ngayThanhToan;
+	}
+	public long tinhTongTien() {
+	     long tt = banAn.getPhuGia();
+	     for(CTHoaDonBanDat s : dsMonAn) {
+	       tt += s.getDonGia() * s.getSoLuong();
+	     }
+	     return tt;
+	  }
+	@Override
+	public String toString() {
+		return "HoaDonBanDat [maBD=" + maBD + ", khachHang=" + khachHang + ", ngayDatBan=" + ngayDatBan + ", ngayPhucVu="
+				+ ngayPhucVu + ", banAn=" + banAn + ", daHuy=" + daHuy + ", dsMonAn=" + dsMonAn + ", daThanhToan="
+				+ daThanhToan + ", tongTien=" + tongTien + ", tienDaDua=" + tienDaDua + ", ngayThanhToan=" + ngayThanhToan
+				+ "]";
+	}
+	
 }
