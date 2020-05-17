@@ -90,20 +90,27 @@ public class HoaDonBanDatDAO extends GeneralCRUD<HoaDonBanDat> {
     return result;
   }*/
   public List<HoaDonBanDat> getDSTTBanDatTheoCustomer(String maKH){
-    Session session = sessionFactory.getCurrentSession();
-    Transaction tr = session.getTransaction();
-    List<HoaDonBanDat> list = null;
-    try {
-      tr.begin();
-      String sql = "select b from HoaDonBanDat b join fetch b.dsMonAn where maKH = '" + maKH + "'";
-      list = session.createQuery(sql, HoaDonBanDat.class).getResultList();
-      tr.commit();
-    } catch (Exception e) {
-      tr.rollback();
-      e.printStackTrace();
-    }
-    return list;
-  }
+	    Session session = sessionFactory.getCurrentSession();
+	    Transaction tr = session.getTransaction();
+	    List<HoaDonBanDat> list = null;
+	    try {
+	      tr.begin();
+	      String sql = "select b from HoaDonBanDat b join fetch b.dsMonAn where maKH = '" + maKH + "'";
+	      list = session.createQuery(sql, HoaDonBanDat.class).getResultList();
+	      tr.commit();
+	      if (list != null) {
+	        for (int i = 0; i < list.size() - 1; i++) {
+	          while((i + 1) < list.size() && list.get(i).getMaBD().equals(list.get(i + 1).getMaBD())) {
+	            list.remove(i+1);
+	          }
+	        }
+	      }
+	    } catch (Exception e) {
+	      //tr.rollback();
+	      e.printStackTrace();
+	    }
+	    return list;
+	}
   public List<HoaDonBanDat> getDSTTBanDat(){
     Session session = sessionFactory.getCurrentSession();
     Transaction tr = session.getTransaction();
