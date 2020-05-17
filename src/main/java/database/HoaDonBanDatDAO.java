@@ -5,6 +5,7 @@
 
 package database;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.persistence.NoResultException;
@@ -132,5 +133,63 @@ public class HoaDonBanDatDAO extends GeneralCRUD<HoaDonBanDat> {
       e.printStackTrace();
     }
     return list != null ? list.get(0) : null;
+  }
+  public List<HoaDonBanDat> getDSHoaDonFrom(Timestamp from, boolean onlyKhachHang) {
+	  Session session = sessionFactory.getCurrentSession();
+    Transaction tr = session.getTransaction();
+    List<HoaDonBanDat> list = null;
+    try {
+      tr.begin();
+      String sql = "select b from HoaDonBanDat b join fetch b.khachHang k join fetch k.taiKhoan t where ngayThanhToan >= :value";
+      if (onlyKhachHang)
+    	  sql += " AND t.maTK like 'KH%'";
+      Query query = session.createQuery(sql, HoaDonBanDat.class);
+      query.setParameter("value", from);
+      list = query.getResultList();
+      tr.commit();
+    } catch (Exception e) {
+      tr.rollback();
+      e.printStackTrace();
+    }
+    return list;
+  }
+  public List<HoaDonBanDat> getDSHoaDonTo(Timestamp to, boolean onlyKhachHang) {
+	  Session session = sessionFactory.getCurrentSession();
+    Transaction tr = session.getTransaction();
+    List<HoaDonBanDat> list = null;
+    try {
+      tr.begin();
+      String sql = "select b from HoaDonBanDat b join fetch b.khachHang k join fetch k.taiKhoan t where ngayThanhToan <= :value";
+      if (onlyKhachHang)
+    	  sql += " AND t.maTK like 'KH%'";
+      Query query = session.createQuery(sql, HoaDonBanDat.class);
+      query.setParameter("value", to);
+      list = query.getResultList();
+      tr.commit();
+    } catch (Exception e) {
+      tr.rollback();
+      e.printStackTrace();
+    }
+    return list;
+  }
+  public List<HoaDonBanDat> getDSHoaDonFromTo(Timestamp from, Timestamp to, boolean onlyKhachHang) {
+	  Session session = sessionFactory.getCurrentSession();
+    Transaction tr = session.getTransaction();
+    List<HoaDonBanDat> list = null;
+    try {
+      tr.begin();
+      String sql = "select b from HoaDonBanDat b join fetch b.khachHang k join fetch k.taiKhoan t where ngayThanhToan >= :valueFrom AND ngayThanhToan <= :valueTo";
+      if (onlyKhachHang)
+    	  sql += " AND t.maTK like 'KH%'";
+      Query query = session.createQuery(sql, HoaDonBanDat.class);
+      query.setParameter("valueFrom", from);
+      query.setParameter("valueTo", to);
+      list = query.getResultList();
+      tr.commit();
+    } catch (Exception e) {
+      tr.rollback();
+      e.printStackTrace();
+    }
+    return list;
   }
 }
