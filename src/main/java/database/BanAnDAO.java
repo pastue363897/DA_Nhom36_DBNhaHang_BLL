@@ -5,9 +5,13 @@
 
 package database;
 
+import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 
 import org.apache.commons.io.FilenameUtils;
 import org.hibernate.Session;
@@ -15,6 +19,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import entites.BanAn;
+import entites.MonAn;
 
 public class BanAnDAO extends GeneralCRUD<BanAn> {
 
@@ -135,4 +140,65 @@ public class BanAnDAO extends GeneralCRUD<BanAn> {
 	    }
 	    return list;
 	}
+	public List<BanAn> timBanAn(String moTaBA, String gio, Timestamp ngayPhucVu, int soLuong) {
+    SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+      Session session = sessionFactory.getCurrentSession();
+      Transaction tr = session.getTransaction();
+      List<BanAn> list = null;
+      try {
+        tr.begin();
+        String sql = "select * from BanAn where coBan = 1";
+        if (moTaBA != null) {
+          moTaBA = moTaBA.trim();
+        }
+        if (gio != null) {
+          gio = gio.trim();
+        }
+        if (ngayPhucVu != null) {
+          sql += " and maBA <> all (" + 
+              "    select maBA from HoaDonBanDat where maBD in ( " + 
+              "    select h.maBD from HoaDonBanDat h inner join CTHoaDonBanDat c on h.maBD = c.maBD" + 
+              "    where daThanhToan = 0" + 
+              "    group by h.maBD, h.ngayPhucVu" + 
+              "    having :date between dateadd(minute, -30, h.ngayPhucVu) and dateadd(minute, count(h.maBD) * 10 + 20, h.ngayPhucVu)" + 
+              "  )" + 
+              " )";
+        } else if (gio != null && !gio.isEmpty()) {
+          sql += " and maBA <> all (" + 
+              "    select maBA from HoaDonBanDat where maBD in ( " + 
+              "    select h.maBD from HoaDonBanDat h inner join CTHoaDonBanDat c on h.maBD = c.maBD" + 
+              "    where daThanhToan = 0" + 
+              "    group by h.maBD, h.ngayPhucVu" + 
+              "    having dateadd(day, DATEDIFF(day, 0, h.ngayPhucVu), :gio) between dateadd(minute, -30, h.ngayPhucVu) and dateadd(minute, count(h.maBD) * 10 + 20, h.ngayPhucVu)" + 
+              "  )" + 
+              " )";
+        }
+        if (moTaBA != null && !moTaBA.isEmpty()) {
+          sql += " and moTaBA like N'%' + :moTa + '%'";
+        }
+        if (soLuong > 0) {
+          sql += " and soLuongGhe <= :soLuong";
+        }
+        
+        Query query = session.createNativeQuery(sql, BanAn.class);
+        
+        if (ngayPhucVu != null) {
+          query.setParameter("date", ngayPhucVu);
+        } else if (gio != null && !gio.isEmpty()) {
+          query.setParameter("gio", gio);
+        }
+        if (moTaBA != null && !moTaBA.isEmpty()) {
+          query.setParameter("moTa", moTaBA);
+        }
+        if (soLuong > 0) {
+          query.setParameter("soLuong", soLuong);
+        }
+        list = query.getResultList();
+        tr.commit();
+      } catch (Exception e) {
+        tr.rollback();
+        e.printStackTrace();
+      }
+      return list;
+  }
 }

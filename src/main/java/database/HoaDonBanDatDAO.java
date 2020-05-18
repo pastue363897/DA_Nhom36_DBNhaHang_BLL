@@ -5,8 +5,13 @@
 
 package database;
 
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Stream;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
@@ -14,7 +19,9 @@ import javax.persistence.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.transform.Transformers;
 
+import entites.BanAn;
 import entites.CTHoaDonBanDat;
 import entites.MonAn;
 import entites.HoaDonBanDat;
@@ -64,6 +71,28 @@ public class HoaDonBanDatDAO extends GeneralCRUD<HoaDonBanDat> {
   public String addBanDat(HoaDonBanDat ttBD) {
     ttBD.setMaBD(generateID());
     return this.save(ttBD);
+  }
+  
+  public boolean checkBanDaDat(String maBA, Timestamp date) {
+    Session session = sessionFactory.getCurrentSession();
+    Transaction tr = session.getTransaction();
+    boolean result = false;
+    try {
+      tr.begin();
+      String sql = "select h.maBD from HoaDonBanDat h inner join CTHoaDonBanDat c on h.maBD = c.maBD" + 
+          " where maBA = :maBA and daThanhToan = 0" + 
+          " group by h.maBD, h.ngayPhucVu" + 
+          " having :date between dateadd(minute, -30, h.ngayPhucVu) and dateadd(minute, count(h.maBD) * 10 + 20, h.ngayPhucVu)";
+      List list = session.createNativeQuery(sql).setParameter("maBA", maBA).setParameter("date", date).list();
+      tr.commit();
+      if (list != null && list.size() > 0) {
+        result = true;
+      }
+    } catch (Exception e) {
+      //tr.rollback();
+      e.printStackTrace();
+    }
+    return result;
   }
   
   public boolean addBanDatVL(HoaDonBanDat ttBD) {
@@ -198,5 +227,30 @@ public class HoaDonBanDatDAO extends GeneralCRUD<HoaDonBanDat> {
       e.printStackTrace();
     }
     return list;
+  }
+  public Map<Timestamp, Timestamp> thoiGianBanDaDatTrongMotNgay(Date date) {
+    Session session = sessionFactory.getCurrentSession();
+    Transaction tr = session.getTransaction();
+    Map<Timestamp, Timestamp> map = null;
+    try {
+      tr.begin();
+      StringBuilder sql = new StringBuilder("select dateadd(minute, -30, h.ngayPhucVu) as s, dateadd(minute, count(h.maBD) * 10 + 20, h.ngayPhucVu) as e " + 
+          "  from HoaDonBanDat h inner join CTHoaDonBanDat c on h.maBD = c.maBD" + 
+          "  where daThanhToan = 0 and :date = Convert(date, h.ngayPhucVu)" + 
+          "  group by h.maBD, h.ngayPhucVu" + 
+          "  order by s");
+      List<List<Object>> list = session.createNativeQuery(sql.toString()).setParameter("date", date).setResultTransformer(Transformers.TO_LIST).list();
+      if (list != null && list.size() > 0) {
+        map = new HashMap<Timestamp, Timestamp>();
+        for (List<Object> row : list) {
+          map.put((Timestamp) row.get(0), (Timestamp) row.get(1));
+        }
+      }
+      tr.commit();
+    } catch (Exception e) {
+      tr.rollback();
+      e.printStackTrace();
+    }
+    return map;
   }
 }

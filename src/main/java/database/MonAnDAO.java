@@ -7,8 +7,11 @@
 package database;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 
 import org.apache.commons.io.FilenameUtils;
 import org.hibernate.Session;
@@ -159,4 +162,44 @@ public class MonAnDAO extends GeneralCRUD<MonAn> {
 	    }
 	    return list;
 	}
+  public List<MonAn> timMonAn(String tenOrMoTa, long giaTien, int soNguoiAn) {
+      Session session = sessionFactory.getCurrentSession();
+      Transaction tr = session.getTransaction();
+      List<MonAn> list = null;
+      try {
+        tr.begin();
+        String sql = "select * from MonAn where daHuy = 0";
+        Set<String> key = null;
+        if (tenOrMoTa != null) {
+          tenOrMoTa = tenOrMoTa.trim();
+        }
+        if (tenOrMoTa != null && !tenOrMoTa.isEmpty()) {
+          sql += " and (tenMA like N'%' + :tenOrMoTa + '%' or moTaMA like N'%' + :tenOrMoTa + '%')";
+        }
+        if (giaTien > 0) {
+          sql += " and giaTien = :giaTien";
+        }
+        if (soNguoiAn > 0) {
+          sql += " and soLuongNguoi <= :soNguoi";
+        }
+        
+        Query query = session.createNativeQuery(sql.toString(), MonAn.class);
+        
+        if (tenOrMoTa != null && !tenOrMoTa.isEmpty()) {
+          query.setParameter("tenOrMoTa", tenOrMoTa);
+        }
+        if (giaTien > 0) {
+          query.setParameter("giaTien", giaTien);
+        }
+        if (soNguoiAn > 0) {
+          query.setParameter("soNguoi", soNguoiAn);
+        }
+        list = query.getResultList();
+        tr.commit();
+      } catch (Exception e) {
+        tr.rollback();
+        e.printStackTrace();
+      }
+      return list;
+  }
 }
