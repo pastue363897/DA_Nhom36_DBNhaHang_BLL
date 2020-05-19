@@ -5,6 +5,7 @@
 
 package database;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
@@ -193,6 +194,88 @@ public class BanAnDAO extends GeneralCRUD<BanAn> {
         if (soLuong > 0) {
           query.setParameter("soLuong", soLuong);
         }
+        list = query.getResultList();
+        tr.commit();
+      } catch (Exception e) {
+        tr.rollback();
+        e.printStackTrace();
+      }
+      return list;
+  }
+	public List<BanAn> timBanAn(String moTaBA, Date date, int soLuong) {
+    SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+      Session session = sessionFactory.getCurrentSession();
+      Transaction tr = session.getTransaction();
+      List<BanAn> list = null;
+      try {
+        tr.begin();
+        String sql1 = "declare @hd table (id int identity(1,1), ma varchar(8))" + 
+            " insert into @hd" + 
+            " select maBA from HoaDonBanDat h1 where daThanhToan = 0 and :date = Convert(date, h1.ngayPhucVu) group by maBA" + 
+            " declare @b table (maBA varchar(8), kySoBA varchar(10), soLuongGhe int, moTaBA nvarchar(500), phuGia bigint, coBan bit, hinhAnh nvarchar(100))" + 
+            " declare @length int" + 
+            " set @length = (select count(*) from @hd)" + 
+            " declare @ma varchar(8)" + 
+            " declare @i int" + 
+            " set @i = 1" + 
+            " while @i <= @length" + 
+            " begin" + 
+            "  set @ma = (select ma from @hd where id = @i)" + 
+            "  declare @table table (id int, s datetime, e datetime)" + 
+            "  delete from @table" + 
+            "  insert into @table(id, s, e)  " + 
+            "    select row_number() over (order by h.ngayPhucVu), dateadd(minute, -30, h.ngayPhucVu) as s, dateadd(minute, count(h.maBD) * 10 + 20, h.ngayPhucVu) as e " + 
+            "    from HoaDonBanDat h inner join CTHoaDonBanDat c on h.maBD = c.maBD" + 
+            "    where daThanhToan = 0 and h.maBA = @ma and :date = Convert(date, h.ngayPhucVu)" + 
+            "    group by h.maBD, h.ngayPhucVu" + 
+            "    order by s asc" + 
+            "  declare @time datetime" + 
+            "  set @time = dateadd(day, DATEDIFF(day, 0, :date), '00:20:00.000')" + 
+            "  declare @count int" + 
+            "  set @count = (select count(*) from @table)" + 
+            "  declare @j int" + 
+            "  set @j = 1" + 
+            "  while @j <= @count" + 
+            "  begin" + 
+            "    set @time = dateadd(minute, 10, @time)" + 
+            "    set @time = ( select e from @table where id = @j and @time between s and e );" + 
+            "    if @time is null" + 
+            "      break;" + 
+            "    set @j = @j + 1;" + 
+            "  end" + 
+            "  if @time is null" + 
+            "    insert into @b select * from BanAn where maBA = @ma" + 
+            "  else if @time < dateadd(day, DATEDIFF(day, 0, :date), '23:30:00.000')" + 
+            "    insert into @b select * from BanAn where maBA = @ma" + 
+            "  set @i = @i + 1;" + 
+            " end" + 
+            " select * from @b where coBan = 1";
+        String sql2 = " union" + 
+            " select * from BanAn where coBan = 1 and maBA <> all (" + 
+            "  select ma from @hd" + 
+            " )";
+        if (moTaBA != null) {
+          moTaBA = moTaBA.trim();
+        }
+        
+        if (moTaBA != null && !moTaBA.isEmpty()) {
+          sql1 += " and moTaBA like N'%' + :moTa + '%'";
+          sql2 += " and moTaBA like N'%' + :moTa + '%'";
+        }
+        if (soLuong > 0) {
+          sql1 += " and soLuongGhe <= :soLuong";
+          sql2 += " and soLuongGhe <= :soLuong";
+        }
+        
+        Query query = session.createNativeQuery(sql1 + sql2, BanAn.class);
+        query.setParameter("date", date);
+        if (moTaBA != null && !moTaBA.isEmpty()) {
+          query.setParameter("moTa", moTaBA);
+        }
+        if (soLuong > 0) {
+          query.setParameter("soLuong", soLuong);
+        }
+        
         list = query.getResultList();
         tr.commit();
       } catch (Exception e) {
