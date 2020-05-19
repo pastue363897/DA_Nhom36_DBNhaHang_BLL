@@ -95,6 +95,31 @@ public class HoaDonBanDatDAO extends GeneralCRUD<HoaDonBanDat> {
     return result;
   }
   
+  public boolean checkSoLuongMonAnHoaDonBanDat(String maBA, Timestamp date, int soLuongMonAn) {
+    Session session = sessionFactory.getCurrentSession();
+    Transaction tr = session.getTransaction();
+    boolean result = false;
+    try {
+      tr.begin();
+      String sql = "select h.maBD from HoaDonBanDat h inner join CTHoaDonBanDat c on h.maBD = c.maBD" + 
+          " where maBA = :maBA and daThanhToan = 0" + 
+          " group by h.maBD, h.ngayPhucVu" + 
+          " having dateadd(minute, :time, :date) between h.ngayPhucVu and dateadd(minute, count(h.maBD) * 10 + 20, h.ngayPhucVu)";
+      int time = 20;
+      time += 10 * soLuongMonAn;
+      List list = session.createNativeQuery(sql).setParameter("maBA", maBA)
+                                                .setParameter("date", date).setParameter("time", time).list();
+      tr.commit();
+      if (list != null && list.size() > 0) {
+        result = true;
+      }
+    } catch (Exception e) {
+      //tr.rollback();
+      e.printStackTrace();
+    }
+    return result;
+  }
+  
   public boolean addBanDatVL(HoaDonBanDat ttBD) {
     ttBD.setMaBD(generateID());
     return this.saveOrUpdate(ttBD);
