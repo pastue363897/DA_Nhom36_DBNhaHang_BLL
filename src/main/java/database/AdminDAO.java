@@ -38,33 +38,19 @@ public class AdminDAO extends GeneralCRUD<Admin> {
 	}
 
 	public int signIn(String username, String password) {
+	  // debug username
+    if(username.equals("DEBUG_LOGIN"))
+      return 1;
 		AccountDAO tmp = new AccountDAO();
-		Account chk = tmp.get(username);
-		Admin adm = getAdminByUsername(username);
-		// debug username
-		if(username.equals("DEBUG_LOGIN"))
-			return 1;
-		if (chk == null || adm == null)
-			return 0;
-		String merge = password + chk.getSalt();
-		MessageDigest md;
-		try {
-			md = MessageDigest.getInstance("SHA-256");
-			byte[] res = md.digest(merge.getBytes(StandardCharsets.UTF_8));
-			String candidateHash = toHexString(res);
-			String realHash = chk.getPasswordHash();
-			//System.out.println("CandidateHash: "+candidateHash);
-			//System.out.println("RealHash: "+realHash);
-			if(candidateHash.equalsIgnoreCase(realHash)) {
-				return 1;
-			}
-			return 0;
-			
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-			return 0;
+		Account chk = new Account(username, password);
+		if (tmp.signIn(chk) == 1) {
+		  System.out.println(chk.getMaTK());
+		  Admin adm = get(chk.getMaTK());
+	    
+	    if (adm != null)
+	      return 1;
 		}
-
+		return 0;
 	}
 
 }
