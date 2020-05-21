@@ -8,6 +8,7 @@ package database;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -253,20 +254,21 @@ public class HoaDonBanDatDAO extends GeneralCRUD<HoaDonBanDat> {
     }
     return list;
   }
-  public Map<Timestamp, Timestamp> thoiGianBanDaDatTrongMotNgay(Date date) {
+  public Map<Timestamp, Timestamp> thoiGianBanDaDatTrongMotNgay(String maBA, Date date) {
     Session session = sessionFactory.getCurrentSession();
     Transaction tr = session.getTransaction();
     Map<Timestamp, Timestamp> map = null;
     try {
       tr.begin();
-      StringBuilder sql = new StringBuilder("select dateadd(minute, -30, h.ngayPhucVu) as s, dateadd(minute, count(h.maBD) * 10 + 20, h.ngayPhucVu) as e " + 
+      String sql = "select dateadd(minute, -30, h.ngayPhucVu) as s, dateadd(minute, count(h.maBD) * 10 + 20, h.ngayPhucVu) as e " + 
           "  from HoaDonBanDat h inner join CTHoaDonBanDat c on h.maBD = c.maBD" + 
-          "  where daThanhToan = 0 and :date = Convert(date, h.ngayPhucVu)" + 
+          "  where daThanhToan = 0 and maBA = :maBA and :date = Convert(date, h.ngayPhucVu)" + 
           "  group by h.maBD, h.ngayPhucVu" + 
-          "  order by s");
-      List<List<Object>> list = session.createNativeQuery(sql.toString()).setParameter("date", date).setResultTransformer(Transformers.TO_LIST).list();
+          "  order by s";
+      List<List<Object>> list = session.createNativeQuery(sql.toString()).setParameter("date", date).setParameter("maBA", maBA)
+                                                                      .setResultTransformer(Transformers.TO_LIST).list();
       if (list != null && list.size() > 0) {
-        map = new HashMap<Timestamp, Timestamp>();
+        map = new LinkedHashMap<Timestamp, Timestamp>();
         for (List<Object> row : list) {
           map.put((Timestamp) row.get(0), (Timestamp) row.get(1));
         }
