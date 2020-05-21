@@ -82,7 +82,7 @@ public class HoaDonBanDatDAO extends GeneralCRUD<HoaDonBanDat> {
       String sql = "select h.maBD from HoaDonBanDat h inner join CTHoaDonBanDat c on h.maBD = c.maBD" + 
           " where maBA = :maBA and daThanhToan = 0" + 
           " group by h.maBD, h.ngayPhucVu" + 
-          " having :date between dateadd(minute, -30, h.ngayPhucVu) and dateadd(minute, count(h.maBD) * 10 + 20, h.ngayPhucVu)";
+          " having :date between h.ngayPhucVu and dateadd(minute, count(h.maBD) * 10 + 20, h.ngayPhucVu)";
       List list = session.createNativeQuery(sql).setParameter("maBA", maBA).setParameter("date", date).list();
       tr.commit();
       if (list != null && list.size() > 0) {
