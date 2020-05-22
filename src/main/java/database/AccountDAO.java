@@ -34,7 +34,7 @@ public class AccountDAO extends GeneralCRUD<Account>{
     return ret;
   }
   
-  private Account getAccountByUsername(String username) {
+  public Account getAccountByUsername(String username) {
     Session session = sessionFactory.getCurrentSession();
     Transaction tr = session.getTransaction();
     try {
@@ -47,7 +47,6 @@ public class AccountDAO extends GeneralCRUD<Account>{
       }
     } catch (Exception e) {
       tr.rollback();
-      e.printStackTrace();
     }
     return null;
   }
