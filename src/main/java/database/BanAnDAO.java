@@ -124,13 +124,13 @@ public class BanAnDAO extends GeneralCRUD<BanAn> {
 	    try {
 	      tr.begin();
 	      int num = Integer.parseInt(keyword);
-	      String sql = "select * from BanAn where coBan = 1 and ( kySoBA like '%" + keyword + "%' OR moTaBA like '%" + keyword + "%' OR soLuongGhe = "
+	      String sql = "select * from BanAn where coBan = 1 and ( kySoBA like '%" + keyword + "%' OR moTaBA like N'%" + keyword + "%' OR soLuongGhe = "
 	    		  + num + ")";
 	      System.out.println(sql);
 	      list = session.createNativeQuery(sql, BanAn.class).getResultList();
 	      tr.commit();
 	    } catch (NumberFormatException e) {
-	      String sql = "select * from BanAn where coBan = 1 and ( kySoBA like '%" + keyword + "%' OR moTaBA like '%" + keyword + "%' OR soLuongGhe = "
+	      String sql = "select * from BanAn where coBan = 1 and ( kySoBA like '%" + keyword + "%' OR moTaBA like N'%" + keyword + "%' OR soLuongGhe = "
 	    		  + 0 + ")";
 	      System.out.println(sql);
 	      list = session.createNativeQuery(sql, BanAn.class).getResultList();
@@ -141,6 +141,49 @@ public class BanAnDAO extends GeneralCRUD<BanAn> {
 	    }
 	    return list;
 	}
+	
+	public List<BanAn> timBanAn(String moTaBA, String kySo, int soLuong) {
+	    SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+	      Session session = sessionFactory.getCurrentSession();
+	      Transaction tr = session.getTransaction();
+	      List<BanAn> list = null;
+	      try {
+	        tr.begin();
+	        String sql = "select * from BanAn where coBan = 1";
+	        if (moTaBA != null) {
+	          moTaBA = moTaBA.trim();
+	        }
+	        if (kySo != null && !kySo.trim().isEmpty()) {
+	        	kySo = kySo.trim();
+	        	sql += " and kySoBA like '%' + :kySo + '%'";
+	        }
+	        if (moTaBA != null && !moTaBA.isEmpty()) {
+	          sql += " and moTaBA like N'%' + :moTa + '%'";
+	        }
+	        if (soLuong > 0) {
+	          sql += " and soLuongGhe <= :soLuong";
+	        }
+	        
+	        Query query = session.createNativeQuery(sql, BanAn.class);
+	        
+	        if (kySo != null && !kySo.isEmpty()) {
+	          query.setParameter("kySo", kySo);
+	        }
+	        if (moTaBA != null && !moTaBA.isEmpty()) {
+	          query.setParameter("moTa", moTaBA);
+	        }
+	        if (soLuong > 0) {
+	          query.setParameter("soLuong", soLuong);
+	        }
+	        list = query.getResultList();
+	        tr.commit();
+	      } catch (Exception e) {
+	        tr.rollback();
+	        e.printStackTrace();
+	      }
+	      return list;
+	  }
+	
 	public List<BanAn> timBanAn(String moTaBA, String gio, Timestamp ngayPhucVu, int soLuong) {
     SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
       Session session = sessionFactory.getCurrentSession();
