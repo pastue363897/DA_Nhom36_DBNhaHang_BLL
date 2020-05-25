@@ -7,6 +7,7 @@ package database;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -246,6 +247,47 @@ public class HoaDonBanDatDAO extends GeneralCRUD<HoaDonBanDat> {
       Query query = session.createQuery(sql, HoaDonBanDat.class);
       query.setParameter("valueFrom", from);
       query.setParameter("valueTo", to);
+      list = query.getResultList();
+      tr.commit();
+    } catch (Exception e) {
+      tr.rollback();
+      e.printStackTrace();
+    }
+    return list;
+  }
+  public List<HoaDonBanDat> timHoaDon(LocalDate date, String tenKH, String soCMND, String soDT) {
+	Session session = sessionFactory.getCurrentSession();
+    Transaction tr = session.getTransaction();
+    List<HoaDonBanDat> list = null;
+    try {
+      tr.begin();
+      String sql = "select b from HoaDonBanDat b join b.khachHang k where b.maBD like 'BD%'";
+      if(date != null) {
+    	  sql += " and datediff(day, ngayDatBan, :value) == 0";
+      }
+      if(!tenKH.isEmpty()) {
+    	  sql += " and hoTen like '%' + :tenKH + '%'";
+      }
+      if(!soCMND.isEmpty()) {
+    	  sql += " and cmnd like '%' + :soCMND + '%'";
+      }
+      if(!soDT.isEmpty()) {
+    	  sql += " and sdt like '%' + :soDT + '%'";
+      }
+      sql += " order by daThanhToan asc, ngayDatBan desc";
+      Query query = session.createQuery(sql, HoaDonBanDat.class);
+      if(date != null) {
+    	  query.setParameter("value", date);
+      }
+      if(!tenKH.isEmpty()) {
+    	  query.setParameter("tenKH", tenKH);
+      }
+      if(!soCMND.isEmpty()) {
+    	  query.setParameter("soCMND", soCMND);
+      }
+      if(!soDT.isEmpty()) {
+    	  query.setParameter("soDT", soDT);
+      }
       list = query.getResultList();
       tr.commit();
     } catch (Exception e) {
