@@ -263,7 +263,7 @@ public class HoaDonBanDatDAO extends GeneralCRUD<HoaDonBanDat> {
       tr.begin();
       String sql = "select b from HoaDonBanDat b join b.khachHang k where b.maBD like 'BD%'";
       if(date != null) {
-    	  sql += " and datediff(day, ngayDatBan, :value) == 0";
+    	  sql += " and datediff(day, ngayPhucVu, :value) = 0";
       }
       if(!tenKH.isEmpty()) {
     	  sql += " and hoTen like '%' + :tenKH + '%'";

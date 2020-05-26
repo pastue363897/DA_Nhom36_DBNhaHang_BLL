@@ -17,6 +17,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import database.CTHoaDonBanDatDAO;
+
 @Entity
 @Table(name = "HoaDonBanDat")
 public class HoaDonBanDat implements Serializable{
@@ -128,6 +130,7 @@ public class HoaDonBanDat implements Serializable{
 	}
 	public long tinhTongTien() {
 	     long tt = banAn.getPhuGia();
+	     dsMonAn = new CTHoaDonBanDatDAO().getDSCTTBanDatMonAnTheoMaBD(maBD);
 	     for(CTHoaDonBanDat s : dsMonAn) {
 	       tt += s.getDonGia() * s.getSoLuong();
 	     }
