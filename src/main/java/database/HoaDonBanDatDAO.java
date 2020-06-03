@@ -84,7 +84,7 @@ public class HoaDonBanDatDAO extends GeneralCRUD<HoaDonBanDat> {
       String sql = "select h.maBD from HoaDonBanDat h inner join CTHoaDonBanDat c on h.maBD = c.maBD" + 
           " where maBA = :maBA and daThanhToan = 0" + 
           " group by h.maBD, h.ngayPhucVu" + 
-          " having :date between h.ngayPhucVu and dateadd(minute, count(h.maBD) * 10 + 20, h.ngayPhucVu)";
+          " having :date between h.ngayPhucVu and dateadd(minute, count(h.maBD) * 15 + 40, h.ngayPhucVu)";
       List list = session.createNativeQuery(sql).setParameter("maBA", maBA).setParameter("date", date).list();
       tr.commit();
       if (list != null && list.size() > 0) {
@@ -106,9 +106,9 @@ public class HoaDonBanDatDAO extends GeneralCRUD<HoaDonBanDat> {
       String sql = "select h.maBD from HoaDonBanDat h inner join CTHoaDonBanDat c on h.maBD = c.maBD" + 
           " where maBA = :maBA and daThanhToan = 0" + 
           " group by h.maBD, h.ngayPhucVu" + 
-          " having dateadd(minute, :time, :date) between h.ngayPhucVu and dateadd(minute, count(h.maBD) * 10 + 20, h.ngayPhucVu)";
-      int time = 20;
-      time += 10 * soLuongMonAn;
+          " having dateadd(minute, :time, :date) between h.ngayPhucVu and dateadd(minute, count(h.maBD) * 15 + 40, h.ngayPhucVu)";
+      int time = 40;
+      time += 15 * soLuongMonAn;
       List list = session.createNativeQuery(sql).setParameter("maBA", maBA)
                                                 .setParameter("date", date).setParameter("time", time).list();
       tr.commit();
@@ -302,7 +302,7 @@ public class HoaDonBanDatDAO extends GeneralCRUD<HoaDonBanDat> {
     Map<Timestamp, Timestamp> map = null;
     try {
       tr.begin();
-      String sql = "select dateadd(minute, -30, h.ngayPhucVu) as s, dateadd(minute, count(h.maBD) * 10 + 20, h.ngayPhucVu) as e " + 
+      String sql = "select dateadd(minute, -55, h.ngayPhucVu) as s, dateadd(minute, count(h.maBD) * 15 + 40, h.ngayPhucVu) as e " + 
           "  from HoaDonBanDat h inner join CTHoaDonBanDat c on h.maBD = c.maBD" + 
           "  where daThanhToan = 0 and maBA = :maBA and :date = Convert(date, h.ngayPhucVu)" + 
           "  group by h.maBD, h.ngayPhucVu" + 
