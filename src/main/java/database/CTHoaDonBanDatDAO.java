@@ -51,4 +51,19 @@ public class CTHoaDonBanDatDAO extends GeneralCRUD<CTHoaDonBanDat>{
     return list;
   }
   
+  public List<CTHoaDonBanDat> getDSCTTBanDatDaThanhToan(){
+	    Session session = sessionFactory.getCurrentSession();
+	    Transaction tr = session.getTransaction();
+	    List<CTHoaDonBanDat> list = null;
+	    try {
+	      tr.begin();
+	      String sql = "select * from CTHoaDonBanDat c join HoaDonBanDat t on c.maBD = t.maBD join MonAn m on m.maMA = c.maMA where t.daThanhToan = 1 order by c.maMA asc, t.ngayThanhToan desc";
+	      list = session.createNativeQuery(sql, CTHoaDonBanDat.class).getResultList();
+	      tr.commit();
+	    } catch (Exception e) {
+	      tr.rollback();
+	      e.printStackTrace();
+	    }
+	    return list;
+	  }
 }
