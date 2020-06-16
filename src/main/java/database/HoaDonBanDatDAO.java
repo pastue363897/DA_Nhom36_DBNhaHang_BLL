@@ -26,6 +26,7 @@ import org.hibernate.transform.Transformers;
 import entites.BanAn;
 import entites.CTHoaDonBanDat;
 import entites.MonAn;
+import enums.ETinhTrangHoaDon;
 import entites.HoaDonBanDat;
 
 public class HoaDonBanDatDAO extends GeneralCRUD<HoaDonBanDat> {
@@ -145,14 +146,27 @@ public class HoaDonBanDatDAO extends GeneralCRUD<HoaDonBanDat> {
     }
     return result;
   }*/
-  public List<HoaDonBanDat> getDSTTBanDatTheoCustomer(String maKH){
+  public List<HoaDonBanDat> getDSTTBanDatTheoCustomer(String maKH, Date ngayPhucVu, ETinhTrangHoaDon tt){
 	    Session session = sessionFactory.getCurrentSession();
 	    Transaction tr = session.getTransaction();
 	    List<HoaDonBanDat> list = null;
 	    try {
 	      tr.begin();
 	      String sql = "select b from HoaDonBanDat b join fetch b.dsMonAn where maKH = '" + maKH + "'";
-	      list = session.createQuery(sql, HoaDonBanDat.class).getResultList();
+	      if (ngayPhucVu != null) {
+	        sql += " and convert(date, ngayPhucVu) = :ngayPhucVu";
+	      }
+	      if (tt != null) {
+	        sql += " and " + tt.getLoaiTT() + " = :tt";
+	      }
+	      Query query = session.createQuery(sql, HoaDonBanDat.class);
+	      if (ngayPhucVu != null) {
+          query.setParameter("ngayPhucVu", ngayPhucVu);
+        }
+        if (tt != null) {
+          query.setParameter("tt", tt.isTrangThai());
+        }
+        list = query.getResultList();
 	      tr.commit();
 	      if (list != null) {
 	        for (int i = 0; i < list.size() - 1; i++) {

@@ -81,14 +81,33 @@ public class BanAnDAO extends GeneralCRUD<BanAn> {
 		banAn.setHinhAnh(newPath);
 		return this.update(banAn);
 	}
-	public List<BanAn> danhSachBanAnCoTheDat() {
+	public int danhSachBanAnCoTheDat() {
+	  SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+    Session session = sessionFactory.getCurrentSession();
+    Transaction tr = session.getTransaction();
+    int count = 0;
+    try {
+      tr.begin();
+      String sql = "select count(*) from BanAn where coBan = 1 ";
+      count = ((Long) session.createQuery(sql).getSingleResult()).intValue();
+      tr.commit();
+    } catch (Exception e) {
+      tr.rollback();
+      e.printStackTrace();
+    }
+    return count;
+	}
+	public List<BanAn> danhSachBanAnCoTheDat(int page) {
 	  SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
     Session session = sessionFactory.getCurrentSession();
     Transaction tr = session.getTransaction();
     List<BanAn> list = null;
     try {
       tr.begin();
-      String sql = "select * from BanAn where coBan = 1";
+      String sql = "select * from BanAn where coBan = 1 "
+          + "order by maBA" + 
+          " offset " + page * 20 + " rows" + 
+          " fetch next 20 rows only";
       list = session.createNativeQuery(sql, BanAn.class).getResultList();
       tr.commit();
     } catch (Exception e) {

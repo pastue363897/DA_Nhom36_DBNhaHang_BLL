@@ -105,14 +105,31 @@ public class MonAnDAO extends GeneralCRUD<MonAn> {
     monAn.setDaHuy(true);
     return this.saveOrUpdate(monAn);
   }
-  
-  public List<MonAn> danhSachMonAnCoTheDat() {
+  public int danhSachMonAnCoTheDat() {
+    Session session = sessionFactory.getCurrentSession();
+    Transaction tr = session.getTransaction();
+    int count = 0;
+    try {
+      tr.begin();
+      String sql = "select count(*) from MonAn where daHuy = 0";
+      count = ((Long) session.createQuery(sql).getSingleResult()).intValue();
+      tr.commit();
+    } catch (Exception e) {
+      tr.rollback();
+      e.printStackTrace();
+    }
+    return count;
+  }
+  public List<MonAn> danhSachMonAnCoTheDat(int page) {
     Session session = sessionFactory.getCurrentSession();
     Transaction tr = session.getTransaction();
     List<MonAn> list = null;
     try {
       tr.begin();
-      String sql = "select * from MonAn where daHuy = 0";
+      String sql = "select * from MonAn where daHuy = 0"
+          + "order by maMA" + 
+          " offset " + page * 20 + " rows" + 
+          " fetch next 20 rows only";
       list = session.createNativeQuery(sql, MonAn.class).getResultList();
       tr.commit();
     } catch (Exception e) {
