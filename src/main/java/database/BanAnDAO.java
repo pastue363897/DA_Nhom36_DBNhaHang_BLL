@@ -135,7 +135,26 @@ public class BanAnDAO extends GeneralCRUD<BanAn> {
     return list;
 	}
 	
-	public List<BanAn> timBanAn(String keyword) {
+	public List<BanAn> timBanAnDatDuoc() {
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+	    Session session = sessionFactory.getCurrentSession();
+	    Transaction tr = session.getTransaction();
+	    List<BanAn> list = null;
+	    try {
+	      tr.begin();
+	      String sql = "select distinct * from BanAn b where b.maBA not in "
+	      		+ "(select maBA from HoaDonBanDat where ngayPhucVu <= GETDATE() AND daThanhToan = 0 AND daHuy = 0) "
+	      		+ "and coBan = 1";
+	      list = session.createNativeQuery(sql, BanAn.class).getResultList();
+	      tr.commit();
+	    } catch (Exception e) {
+	      tr.rollback();
+	      e.printStackTrace();
+	    }
+	    return list;
+	}
+	
+	public List<BanAn> timBanAnDatDuoc(String keyword) {
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 	    Session session = sessionFactory.getCurrentSession();
 	    Transaction tr = session.getTransaction();
@@ -143,14 +162,15 @@ public class BanAnDAO extends GeneralCRUD<BanAn> {
 	    try {
 	      tr.begin();
 	      int num = Integer.parseInt(keyword);
-	      String sql = "select * from BanAn where coBan = 1 and ( kySoBA like '%" + keyword + "%' OR moTaBA like N'%" + keyword + "%' OR soLuongGhe = "
-	    		  + num + ")";
-	      System.out.println(sql);
+	      String sql = "select distinct * from BanAn b where b.maBA not in "
+	      		+ "(select maBA from HoaDonBanDat where ngayPhucVu <= GETDATE() AND daThanhToan = 0 AND daHuy = 0) "
+	      		+ "and coBan = 1 and ( kySoBA like '%" + keyword + "%' OR moTaBA like N'%" + keyword + "%' OR soLuongGhe = "+ num + ")";
 	      list = session.createNativeQuery(sql, BanAn.class).getResultList();
 	      tr.commit();
 	    } catch (NumberFormatException e) {
-	      String sql = "select * from BanAn where coBan = 1 and ( kySoBA like '%" + keyword + "%' OR moTaBA like N'%" + keyword + "%' OR soLuongGhe = "
-	    		  + 0 + ")";
+	      String sql = "select distinct * from BanAn b where b.maBA not in "
+	      		+ "(select maBA from HoaDonBanDat where ngayPhucVu <= GETDATE() AND daThanhToan = 0 AND daHuy = 0) "
+	      		+ "and coBan = 1 and ( kySoBA like '%" + keyword + "%' OR moTaBA like N'%" + keyword + "%' OR soLuongGhe = "+ 0 + ")";
 	      System.out.println(sql);
 	      list = session.createNativeQuery(sql, BanAn.class).getResultList();
 	      tr.commit();

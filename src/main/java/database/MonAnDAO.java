@@ -139,6 +139,22 @@ public class MonAnDAO extends GeneralCRUD<MonAn> {
     return list;
   }
   
+  public List<MonAn> getDSMonAn() {
+	    Session session = sessionFactory.getCurrentSession();
+	    Transaction tr = session.getTransaction();
+	    List<MonAn> list = null;
+	    try {
+	      tr.begin();
+	      String sql = "select * from MonAn where daHuy = 0 order by maMA";
+	      list = session.createNativeQuery(sql, MonAn.class).getResultList();
+	      tr.commit();
+	    } catch (Exception e) {
+	      tr.rollback();
+	      e.printStackTrace();
+	    }
+	    return list;
+	  }
+  
   public List<MonAn> danhSachMonAnHome(int count) {
     Session session = sessionFactory.getCurrentSession();
     Transaction tr = session.getTransaction();
