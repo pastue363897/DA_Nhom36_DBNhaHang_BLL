@@ -66,4 +66,36 @@ public class CTHoaDonBanDatDAO extends GeneralCRUD<CTHoaDonBanDat>{
 	    }
 	    return list;
 	  }
+  public List<CTHoaDonBanDat> getDSCTTBanDatTheoKhachHang(){
+	    Session session = sessionFactory.getCurrentSession();
+	    Transaction tr = session.getTransaction();
+	    List<CTHoaDonBanDat> list = null;
+	    try {
+	      tr.begin();
+	      String sql = "select * from CTHoaDonBanDat c join HoaDonBanDat t on c.maBD = t.maBD join MonAn m on m.maMA = c.maMA join "
+	      		+ "KhachHang k on k.maKH = t.maKH where t.daThanhToan = 1 AND t.maKH like 'KH%' order by t.maKH asc, c.maMA asc, t.ngayThanhToan desc";
+	      list = session.createNativeQuery(sql, CTHoaDonBanDat.class).getResultList();
+	      tr.commit();
+	    } catch (Exception e) {
+	      tr.rollback();
+	      e.printStackTrace();
+	    }
+	    return list;
+	  }
+  public List<CTHoaDonBanDat> getDSCTTBanDatTheoKhachHangMonConBan(){
+	    Session session = sessionFactory.getCurrentSession();
+	    Transaction tr = session.getTransaction();
+	    List<CTHoaDonBanDat> list = null;
+	    try {
+	      tr.begin();
+	      String sql = "select * from CTHoaDonBanDat c join HoaDonBanDat t on c.maBD = t.maBD join MonAn m on m.maMA = c.maMA join "
+	      		+ "KhachHang k on k.maKH = t.maKH where t.daThanhToan = 1 AND t.maKH like 'KH%' AND m.daHuy = 0 order by t.maKH asc, c.maMA asc, t.ngayThanhToan desc";
+	      list = session.createNativeQuery(sql, CTHoaDonBanDat.class).getResultList();
+	      tr.commit();
+	    } catch (Exception e) {
+	      tr.rollback();
+	      e.printStackTrace();
+	    }
+	    return list;
+	  }
 }

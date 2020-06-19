@@ -8,16 +8,14 @@ package database;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Stream;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -76,7 +74,8 @@ public class HoaDonBanDatDAO extends GeneralCRUD<HoaDonBanDat> {
     return this.save(ttBD);
   }
   
-  public boolean checkBanDaDat(String maBA, Timestamp date) {
+  @SuppressWarnings("rawtypes")
+public boolean checkBanDaDat(String maBA, Timestamp date) {
     Session session = sessionFactory.getCurrentSession();
     Transaction tr = session.getTransaction();
     boolean result = false;
@@ -98,7 +97,8 @@ public class HoaDonBanDatDAO extends GeneralCRUD<HoaDonBanDat> {
     return result;
   }
   
-  public boolean checkSoLuongMonAnHoaDonBanDat(String maBA, Timestamp date, int soLuongMonAn) {
+  @SuppressWarnings("rawtypes")
+public boolean checkSoLuongMonAnHoaDonBanDat(String maBA, Timestamp date, int soLuongMonAn) {
     Session session = sessionFactory.getCurrentSession();
     Transaction tr = session.getTransaction();
     boolean result = false;
@@ -196,6 +196,22 @@ public class HoaDonBanDatDAO extends GeneralCRUD<HoaDonBanDat> {
     }
     return list;
   }
+  @SuppressWarnings("deprecation")
+public List<HoaDonBanDat> getDSTTBanDatTheoKhachHang(){
+	    Session session = sessionFactory.getCurrentSession();
+	    Transaction tr = session.getTransaction();
+	    List<HoaDonBanDat> list = null;
+	    try {
+	      tr.begin();
+	      String sql = "select b from HoaDonBanDat b join fetch b.dsMonAn where maKH like 'KH%' order by maKH asc, ngayThanhToan desc";
+	      list = session.createQuery(sql, HoaDonBanDat.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).getResultList();
+	      tr.commit();
+	    } catch (Exception e) {
+	      tr.rollback();
+	      e.printStackTrace();
+	    }
+	    return list;
+	  }
   public HoaDonBanDat getTTBanDat(String maBD){
     Session session = sessionFactory.getCurrentSession();
     Transaction tr = session.getTransaction();
@@ -211,7 +227,8 @@ public class HoaDonBanDatDAO extends GeneralCRUD<HoaDonBanDat> {
     }
     return list != null ? list.get(0) : null;
   }
-  public List<HoaDonBanDat> getDSHoaDonFrom(Timestamp from, boolean onlyKhachHang) {
+  @SuppressWarnings("unchecked")
+public List<HoaDonBanDat> getDSHoaDonFrom(Timestamp from, boolean onlyKhachHang) {
 	  Session session = sessionFactory.getCurrentSession();
     Transaction tr = session.getTransaction();
     List<HoaDonBanDat> list = null;
@@ -230,7 +247,8 @@ public class HoaDonBanDatDAO extends GeneralCRUD<HoaDonBanDat> {
     }
     return list;
   }
-  public List<HoaDonBanDat> getDSHoaDonTo(Timestamp to, boolean onlyKhachHang) {
+  @SuppressWarnings("unchecked")
+public List<HoaDonBanDat> getDSHoaDonTo(Timestamp to, boolean onlyKhachHang) {
 	  Session session = sessionFactory.getCurrentSession();
     Transaction tr = session.getTransaction();
     List<HoaDonBanDat> list = null;
@@ -249,7 +267,8 @@ public class HoaDonBanDatDAO extends GeneralCRUD<HoaDonBanDat> {
     }
     return list;
   }
-  public List<HoaDonBanDat> getDSHoaDonFromTo(Timestamp from, Timestamp to, boolean onlyKhachHang) {
+  @SuppressWarnings("unchecked")
+public List<HoaDonBanDat> getDSHoaDonFromTo(Timestamp from, Timestamp to, boolean onlyKhachHang) {
 	  Session session = sessionFactory.getCurrentSession();
     Transaction tr = session.getTransaction();
     List<HoaDonBanDat> list = null;
@@ -269,7 +288,8 @@ public class HoaDonBanDatDAO extends GeneralCRUD<HoaDonBanDat> {
     }
     return list;
   }
-  public List<HoaDonBanDat> timHoaDon(LocalDate date, String tenKH, String soCMND, String soDT) {
+  @SuppressWarnings("unchecked")
+public List<HoaDonBanDat> timHoaDon(LocalDate date, String tenKH, String soCMND, String soDT) {
 	Session session = sessionFactory.getCurrentSession();
     Transaction tr = session.getTransaction();
     List<HoaDonBanDat> list = null;
@@ -310,7 +330,8 @@ public class HoaDonBanDatDAO extends GeneralCRUD<HoaDonBanDat> {
     }
     return list;
   }
-  public Map<Timestamp, Timestamp> thoiGianBanDaDatTrongMotNgay(String maBA, Date date) {
+  @SuppressWarnings({ "unchecked", "deprecation" })
+public Map<Timestamp, Timestamp> thoiGianBanDaDatTrongMotNgay(String maBA, Date date) {
     Session session = sessionFactory.getCurrentSession();
     Transaction tr = session.getTransaction();
     Map<Timestamp, Timestamp> map = null;
