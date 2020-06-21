@@ -8,8 +8,6 @@ package database;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
@@ -20,7 +18,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import entites.BanAn;
-import entites.MonAn;
+import entites.CTHoaDonBanDat;
 
 public class BanAnDAO extends GeneralCRUD<BanAn> {
 
@@ -135,6 +133,25 @@ public class BanAnDAO extends GeneralCRUD<BanAn> {
     return list;
 	}
 	
+  public boolean checkPreviouslyBooked(BanAn banAn) {
+	SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+    Session session = sessionFactory.getCurrentSession();
+    Transaction tr = session.getTransaction();
+    try {
+      tr.begin();
+      String sql = "select top 1 * from HoaDonBanDat where maBA = '" + banAn.getMaBA() + "'";
+      CTHoaDonBanDat ct = session.createNativeQuery(sql, CTHoaDonBanDat.class).getSingleResult();
+      tr.commit();
+      if (ct != null) {
+        return true;
+      }
+    } catch (Exception e) {
+      tr.rollback();
+      e.printStackTrace();
+    }
+    return false;
+  }
+	
 	public List<BanAn> timBanAnDatDuoc() {
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 	    Session session = sessionFactory.getCurrentSession();
@@ -181,6 +198,7 @@ public class BanAnDAO extends GeneralCRUD<BanAn> {
 	    return list;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<BanAn> timBanAn(String moTaBA, String kySo, int soLuong) {
 	    SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 	      Session session = sessionFactory.getCurrentSession();
@@ -223,6 +241,7 @@ public class BanAnDAO extends GeneralCRUD<BanAn> {
 	      return list;
 	  }
 	
+	@SuppressWarnings("unchecked")
 	public List<BanAn> timBanAn(String moTaBA, String gio, Timestamp ngayPhucVu, int soLuong) {
     SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
       Session session = sessionFactory.getCurrentSession();
@@ -284,6 +303,7 @@ public class BanAnDAO extends GeneralCRUD<BanAn> {
       }
       return list;
   }
+	@SuppressWarnings("unchecked")
 	public List<BanAn> timBanAn(String moTaBA, Date date, int soLuong) {
     SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
       Session session = sessionFactory.getCurrentSession();

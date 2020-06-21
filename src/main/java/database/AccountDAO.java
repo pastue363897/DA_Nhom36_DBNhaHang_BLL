@@ -16,7 +16,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import entites.Account;
-import entites.CTHoaDonBanDat;
 
 public class AccountDAO extends GeneralCRUD<Account>{
 
