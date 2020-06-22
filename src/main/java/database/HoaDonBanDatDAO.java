@@ -82,7 +82,7 @@ public boolean checkBanDaDat(String maBA, Timestamp date) {
     try {
       tr.begin();
       String sql = "select h.maBD from HoaDonBanDat h inner join CTHoaDonBanDat c on h.maBD = c.maBD" + 
-          " where maBA = :maBA and daThanhToan = 0" + 
+          " where maBA = :maBA and daHuy = 0 and daThanhToan = 0" + 
           " group by h.maBD, h.ngayPhucVu" + 
           " having :date between h.ngayPhucVu and dateadd(minute, count(h.maBD) * 15 + 40, h.ngayPhucVu)";
       List list = session.createNativeQuery(sql).setParameter("maBA", maBA).setParameter("date", date).list();
@@ -105,7 +105,7 @@ public boolean checkSoLuongMonAnHoaDonBanDat(String maBA, Timestamp date, int so
     try {
       tr.begin();
       String sql = "select h.maBD from HoaDonBanDat h inner join CTHoaDonBanDat c on h.maBD = c.maBD" + 
-          " where maBA = :maBA and daThanhToan = 0" + 
+          " where maBA = :maBA and daHuy = 0 and daThanhToan = 0" + 
           " group by h.maBD, h.ngayPhucVu" + 
           " having dateadd(minute, :time, :date) between h.ngayPhucVu and dateadd(minute, count(h.maBD) * 15 + 40, h.ngayPhucVu)";
       int time = 40;
@@ -355,7 +355,7 @@ public Map<Timestamp, Timestamp> thoiGianBanDaDatTrongMotNgay(String maBA, Date 
       tr.begin();
       String sql = "select dateadd(minute, -55, h.ngayPhucVu) as s, dateadd(minute, count(h.maBD) * 15 + 40, h.ngayPhucVu) as e " + 
           "  from HoaDonBanDat h inner join CTHoaDonBanDat c on h.maBD = c.maBD" + 
-          "  where daThanhToan = 0 and maBA = :maBA and :date = Convert(date, h.ngayPhucVu)" + 
+          "  where daHuy = 0 and daThanhToan = 0 and maBA = :maBA and :date = Convert(date, h.ngayPhucVu)" + 
           "  group by h.maBD, h.ngayPhucVu" + 
           "  order by s";
       List<List<Object>> list = session.createNativeQuery(sql.toString()).setParameter("date", date).setParameter("maBA", maBA)
