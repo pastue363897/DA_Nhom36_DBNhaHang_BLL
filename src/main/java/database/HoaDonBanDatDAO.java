@@ -196,6 +196,22 @@ public boolean checkSoLuongMonAnHoaDonBanDat(String maBA, Timestamp date, int so
     }
     return list;
   }
+  
+  public List<HoaDonBanDat> getDSTTBanDatUnique(){
+	    Session session = sessionFactory.getCurrentSession();
+	    Transaction tr = session.getTransaction();
+	    List<HoaDonBanDat> list = null;
+	    try {
+	      tr.begin();
+	      String sql = "select b from HoaDonBanDat b join fetch b.dsMonAn order by daThanhToan asc";
+	      list = session.createQuery(sql, HoaDonBanDat.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).getResultList();
+	      tr.commit();
+	    } catch (Exception e) {
+	      tr.rollback();
+	      e.printStackTrace();
+	    }
+	    return list;
+	  }
   @SuppressWarnings("deprecation")
 public List<HoaDonBanDat> getDSTTBanDatTheoKhachHang(){
 	    Session session = sessionFactory.getCurrentSession();
