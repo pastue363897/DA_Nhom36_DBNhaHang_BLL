@@ -98,6 +98,29 @@ public boolean checkBanDaDat(String maBA, Timestamp date) {
   }
   
   @SuppressWarnings("rawtypes")
+  public boolean checkBanTrungDatTruoc(String maBA, Timestamp date) {
+      Session session = sessionFactory.getCurrentSession();
+      Transaction tr = session.getTransaction();
+      boolean result = false;
+      try {
+        tr.begin();
+        String sql = "select h.maBD from HoaDonBanDat h inner join CTHoaDonBanDat c on h.maBD = c.maBD" + 
+            " where maBA = :maBA and daHuy = 0 and daThanhToan = 0" + 
+            " group by h.maBD, h.ngayPhucVu" +
+            " having cast(h.ngayPhucVu as Date) = :date";
+        List list = session.createNativeQuery(sql).setParameter("maBA", maBA).setParameter("date", date.toLocalDateTime().toLocalDate()).list();
+        tr.commit();
+        if (list != null && list.size() > 0) {
+          result = true;
+        }
+      } catch (Exception e) {
+        tr.rollback();
+        e.printStackTrace();
+      }
+      return result;
+    }
+  
+  @SuppressWarnings("rawtypes")
 public boolean checkSoLuongMonAnHoaDonBanDat(String maBA, Timestamp date, int soLuongMonAn) {
     Session session = sessionFactory.getCurrentSession();
     Transaction tr = session.getTransaction();
