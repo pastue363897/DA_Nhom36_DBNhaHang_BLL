@@ -218,7 +218,7 @@ public class BanAnDAO extends GeneralCRUD<BanAn> {
 	          sql += " and moTaBA like N'%' + :moTa + '%'";
 	        }
 	        if (soLuong > 0) {
-	          sql += " and soLuongGhe <= :soLuong";
+	          sql += " and soLuongGhe >= :soLuong";
 	        }
 	        
 	        Query query = session.createNativeQuery(sql, BanAn.class);
@@ -279,7 +279,7 @@ public class BanAnDAO extends GeneralCRUD<BanAn> {
           sql += " and moTaBA like N'%' + :moTa + '%'";
         }
         if (soLuong > 0) {
-          sql += " and soLuongGhe <= :soLuong";
+          sql += " and soLuongGhe >= :soLuong";
         }
         
         Query query = session.createNativeQuery(sql, BanAn.class);
@@ -365,8 +365,8 @@ public class BanAnDAO extends GeneralCRUD<BanAn> {
           sql2 += " and moTaBA like N'%' + :moTa + '%'";
         }
         if (soLuong > 0) {
-          sql1 += " and soLuongGhe <= :soLuong";
-          sql2 += " and soLuongGhe <= :soLuong";
+          sql1 += " and soLuongGhe >= :soLuong";
+          sql2 += " and soLuongGhe >= :soLuong";
         }
         
         Query query = session.createNativeQuery(sql1 + sql2, BanAn.class);
