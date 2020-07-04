@@ -6,7 +6,7 @@
 package enums;
 
 public enum ETinhTrangHoaDon {
-  DaThanhToan(true, "daThanhToan"), ChuaThanhToan(false, "daThanhToan"), DaHuy(true, "daHuy");
+  DaThanhToan(true, "daThanhToan = :tt"), ChuaThanhToan(false, "(daThanhToan= :tt and daHuy = :tt)"), DaHuy(true, "daHuy = :tt");
   private boolean trangThai;
   private String loaiTT;
   private ETinhTrangHoaDon(boolean trangThai, String loaiTT) {

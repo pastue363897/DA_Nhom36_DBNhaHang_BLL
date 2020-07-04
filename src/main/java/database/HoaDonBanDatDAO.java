@@ -180,7 +180,7 @@ public boolean checkSoLuongMonAnHoaDonBanDat(String maBA, Timestamp date, int so
 	        sql += " and convert(date, ngayPhucVu) = :ngayPhucVu";
 	      }
 	      if (tt != null) {
-	        sql += " and " + tt.getLoaiTT() + " = :tt";
+	        sql += " and " + tt.getLoaiTT();
 	      }
 	      Query query = session.createQuery(sql, HoaDonBanDat.class);
 	      if (ngayPhucVu != null) {
@@ -328,7 +328,7 @@ public List<HoaDonBanDat> getDSHoaDonFromTo(Timestamp from, Timestamp to, boolea
     return list;
   }
   @SuppressWarnings("unchecked")
-public List<HoaDonBanDat> timHoaDon(LocalDate date, String tenKH, String soCMND, String soDT) {
+public List<HoaDonBanDat> timHoaDon(LocalDate date, String tenKH, String soCMND, String soDT, ETinhTrangHoaDon tt) {
 	Session session = sessionFactory.getCurrentSession();
     Transaction tr = session.getTransaction();
     List<HoaDonBanDat> list = null;
@@ -347,6 +347,9 @@ public List<HoaDonBanDat> timHoaDon(LocalDate date, String tenKH, String soCMND,
       if(!soDT.isEmpty()) {
     	  sql += " and sdt like '%' + :soDT + '%'";
       }
+      if (tt != null) {
+        sql += " and " + tt.getLoaiTT();
+      }
       sql += " order by daThanhToan asc, ngayDatBan desc";
       Query query = session.createQuery(sql, HoaDonBanDat.class);
       if(date != null) {
@@ -360,6 +363,9 @@ public List<HoaDonBanDat> timHoaDon(LocalDate date, String tenKH, String soCMND,
       }
       if(!soDT.isEmpty()) {
     	  query.setParameter("soDT", soDT);
+      }
+      if (tt != null) {
+        query.setParameter("tt", tt.isTrangThai());
       }
       list = query.getResultList();
       tr.commit();

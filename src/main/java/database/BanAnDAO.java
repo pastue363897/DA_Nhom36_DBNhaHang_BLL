@@ -19,6 +19,7 @@ import org.hibernate.Transaction;
 
 import entites.BanAn;
 import entites.CTHoaDonBanDat;
+import entites.HoaDonBanDat;
 
 public class BanAnDAO extends GeneralCRUD<BanAn> {
 
@@ -140,7 +141,7 @@ public class BanAnDAO extends GeneralCRUD<BanAn> {
     try {
       tr.begin();
       String sql = "select top 1 * from HoaDonBanDat where maBA = '" + banAn.getMaBA() + "'";
-      CTHoaDonBanDat ct = session.createNativeQuery(sql, CTHoaDonBanDat.class).getSingleResult();
+      HoaDonBanDat ct = session.createNativeQuery(sql, HoaDonBanDat.class).getSingleResult();
       tr.commit();
       if (ct != null) {
         return true;
