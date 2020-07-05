@@ -53,6 +53,7 @@ public class HoaDonBanDat implements Serializable{
     this.ngayDatBan = ngayDatBan;
     this.ngayPhucVu = ngayPhucVu;
     this.banAn = banAn;
+    this.phuGiaBanAn= banAn.getPhuGia();
     this.daHuy = daHuy;
     this.dsMonAn = dsMonAn;
   }
@@ -76,6 +77,7 @@ public class HoaDonBanDat implements Serializable{
     this.ngayDatBan = ngayDatBan;
     this.ngayPhucVu = ngayPhucVu;
     this.banAn = banAn;
+    this.phuGiaBanAn= banAn.getPhuGia();
   }
   public String getMaBD() {
     return maBD;
