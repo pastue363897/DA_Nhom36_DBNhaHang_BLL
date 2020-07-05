@@ -14,7 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import database.CTHoaDonBanDatDAO;
@@ -28,6 +27,9 @@ public class HoaDonBanDat implements Serializable{
   @ManyToOne
   @JoinColumn(name = "maKH")
   private Customer khachHang;
+  @ManyToOne
+  @JoinColumn(name = "maNV")
+  private Admin nhanVien;
   private Timestamp ngayDatBan;
   private Timestamp ngayPhucVu;
   @ManyToOne
@@ -37,7 +39,7 @@ public class HoaDonBanDat implements Serializable{
   @OneToMany(mappedBy = "ttBanDat")
   private List<CTHoaDonBanDat> dsMonAn;
   private boolean daThanhToan;
-  private long tongTien;
+  private long phuGiaBanAn;
   private long tienDaDua;
   private Timestamp ngayThanhToan;
   public HoaDonBanDat() {
@@ -47,6 +49,19 @@ public class HoaDonBanDat implements Serializable{
     boolean daHuy, List<CTHoaDonBanDat> dsMonAn) {
     super();
     this.maBD = maBD;
+    this.khachHang = khachHang;
+    this.ngayDatBan = ngayDatBan;
+    this.ngayPhucVu = ngayPhucVu;
+    this.banAn = banAn;
+    this.daHuy = daHuy;
+    this.dsMonAn = dsMonAn;
+  }
+  
+  public HoaDonBanDat(String maBD, Customer khachHang, Admin nhanVien, Timestamp ngayDatBan, Timestamp ngayPhucVu, BanAn banAn,
+    boolean daHuy, List<CTHoaDonBanDat> dsMonAn) {
+    super();
+    this.maBD = maBD;
+    this.nhanVien = nhanVien;
     this.khachHang = khachHang;
     this.ngayDatBan = ngayDatBan;
     this.ngayPhucVu = ngayPhucVu;
@@ -67,6 +82,12 @@ public class HoaDonBanDat implements Serializable{
   }
   public void setMaBD(String maBD) {
     this.maBD = maBD;
+  }
+  public Admin getNhanVien() {
+	return nhanVien;
+  }
+  public void setNhanVien(Admin nhanVien) {
+	this.nhanVien = nhanVien;
   }
   public Customer getKhachHang() {
     return khachHang;
@@ -110,11 +131,11 @@ public class HoaDonBanDat implements Serializable{
 	public void setDaThanhToan(boolean daThanhToan) {
 		this.daThanhToan = daThanhToan;
 	}
-	public long getTongTien() {
-		return tongTien;
+	public long getPhuGiaBanAn() {
+		return phuGiaBanAn;
 	}
-	public void setTongTien(long tongTien) {
-		this.tongTien = tongTien;
+	public void setPhuGiaBanAn(long phuGiaBanAn) {
+		this.phuGiaBanAn = phuGiaBanAn;
 	}
 	public long getTienDaDua() {
 		return tienDaDua;
@@ -129,7 +150,7 @@ public class HoaDonBanDat implements Serializable{
 		this.ngayThanhToan = ngayThanhToan;
 	}
 	public long tinhTongTien() {
-	     long tt = banAn.getPhuGia();
+	     long tt = 0;
 	     dsMonAn = new CTHoaDonBanDatDAO().getDSCTTBanDatMonAnTheoMaBD(maBD);
 	     for(CTHoaDonBanDat s : dsMonAn) {
 	       tt += s.getDonGia() * s.getSoLuong();
@@ -140,7 +161,7 @@ public class HoaDonBanDat implements Serializable{
 	public String toString() {
 		return "HoaDonBanDat [maBD=" + maBD + ", khachHang=" + khachHang + ", ngayDatBan=" + ngayDatBan + ", ngayPhucVu="
 				+ ngayPhucVu + ", banAn=" + banAn + ", daHuy=" + daHuy + ", dsMonAn=" + dsMonAn + ", daThanhToan="
-				+ daThanhToan + ", tongTien=" + tongTien + ", tienDaDua=" + tienDaDua + ", ngayThanhToan=" + ngayThanhToan
+				+ daThanhToan + ", tongTien=" + phuGiaBanAn + ", tienDaDua=" + tienDaDua + ", ngayThanhToan=" + ngayThanhToan
 				+ "]";
 	}
 	

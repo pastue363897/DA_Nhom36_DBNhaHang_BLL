@@ -7,45 +7,75 @@ package entites;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "NguoiQuanLy")
-public class Admin implements Serializable{
-  private static final long serialVersionUID = -6175789101923072450L;
+public class Admin implements Serializable {
+	private static final long serialVersionUID = -6175789101923072450L;
 
-  private String hoTen;
-  @Id
-  @OneToOne
-  @JoinColumn(name = "maNV", referencedColumnName = "maTK")
-  private Account taiKhoan;
-  public Admin() {
-    super();
-  }
-  public Admin(String hoTen, Account taiKhoan) {
-    super();
-    this.hoTen = hoTen;
-    this.taiKhoan = taiKhoan;
-  }
-  public String getHoTen() {
-    return hoTen;
-  }
-  public void setHoTen(String hoTen) {
-    this.hoTen = hoTen;
-  }
-  public Account getTaiKhoan() {
-    return taiKhoan;
-  }
-  public void setTaiKhoan(Account taiKhoan) {
-    this.taiKhoan = taiKhoan;
-  }
-  @Override
-  public String toString() {
-    return "Admin [hoTen=" + hoTen + ", taiKhoan=" + taiKhoan + "]";
-  }
-  
+	@Id
+	private String maNV;
+	private String hoTen;
+	@Column(unique = true)
+	private String username;
+	private String passwordHash;
+	private String salt;
+
+	public Admin() {
+		super();
+	}
+
+	public Admin(String maNV, String hoTen, String username, String passwordHash, String salt) {
+		super();
+		this.maNV = maNV;
+		this.hoTen = hoTen;
+		this.username = username;
+		this.passwordHash = passwordHash;
+		this.salt = salt;
+	}
+
+	public String getMaNV() {
+		return maNV;
+	}
+
+	public void setMaNV(String maNV) {
+		this.maNV = maNV;
+	}
+
+	public String getHoTen() {
+		return hoTen;
+	}
+
+	public void setHoTen(String hoTen) {
+		this.hoTen = hoTen;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPasswordHash() {
+		return passwordHash;
+	}
+
+	public void setPasswordHash(String passwordHash) {
+		this.passwordHash = passwordHash;
+	}
+
+	public String getSalt() {
+		return salt;
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
+
 }
