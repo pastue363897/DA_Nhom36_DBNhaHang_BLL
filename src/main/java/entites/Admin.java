@@ -17,7 +17,7 @@ import javax.persistence.Table;
 import enums.EChucVu;
 
 @Entity
-@Table(name = "NguoiQuanLy")
+@Table(name = "NhanVien")
 public class Admin implements Serializable {
 	private static final long serialVersionUID = -6175789101923072450L;
 
