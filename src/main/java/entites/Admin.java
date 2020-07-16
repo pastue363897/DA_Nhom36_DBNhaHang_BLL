@@ -7,10 +7,14 @@ package entites;
 
 import java.io.Serializable;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import enums.EChucVu;
 
 @Entity
 @Table(name = "NguoiQuanLy")
@@ -24,21 +28,25 @@ public class Admin implements Serializable {
 	private String username;
 	private String passwordHash;
 	private String salt;
+	@Basic
+	@Convert(converter = EChucVu.GenderConverter.class)
+	private EChucVu chucVu;
 
 	public Admin() {
 		super();
 	}
 
-	public Admin(String maNV, String hoTen, String username, String passwordHash, String salt) {
-		super();
-		this.maNV = maNV;
-		this.hoTen = hoTen;
-		this.username = username;
-		this.passwordHash = passwordHash;
-		this.salt = salt;
-	}
+	public Admin(String maNV, String hoTen, String username, String passwordHash, String salt, EChucVu chucVu) {
+    super();
+    this.maNV = maNV;
+    this.hoTen = hoTen;
+    this.username = username;
+    this.passwordHash = passwordHash;
+    this.salt = salt;
+    this.chucVu = chucVu;
+  }
 
-	public String getMaNV() {
+  public String getMaNV() {
 		return maNV;
 	}
 
@@ -77,5 +85,13 @@ public class Admin implements Serializable {
 	public void setSalt(String salt) {
 		this.salt = salt;
 	}
+
+  public EChucVu getChucVu() {
+    return chucVu;
+  }
+
+  public void setChucVu(EChucVu chucVu) {
+    this.chucVu = chucVu;
+  }
 
 }
